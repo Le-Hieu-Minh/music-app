@@ -1,0 +1,301 @@
+/* --- Thiết lập chung cho Header --- */
+.header {
+  /* Đặt nền trắng cho header và bóng nhẹ để nổi bật */
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Bóng đổ mềm */
+  padding: 15px 0;
+  /* Khoảng đệm trên dưới */
+  position: sticky;
+  /* Giữ header trên cùng khi cuộn */
+  top: 0;
+  z-index: 1000;
+  /* Đảm bảo header nằm trên các nội dung khác */
+}
+
+/* --- Container và Row (Giả định sử dụng Bootstrap Grid) --- */
+.container {
+  /* Thiết lập cho container nếu cần tùy chỉnh (nếu bạn dùng framework như Bootstrap, thường không cần) */
+  width: 100%;
+  max-width: 1200px;
+  /* Giới hạn chiều rộng tối đa */
+  margin: 0 auto;
+  /* Căn giữa container */
+  padding: 0 15px;
+  /* Khoảng đệm hai bên */
+}
+
+.row {
+  /* Sử dụng Flexbox cho .row để quản lý căn chỉnh */
+  display: flex;
+  /* align-items-center đã có, nhưng thêm lại để đảm bảo */
+  align-items: center;
+  justify-content: space-between;
+  /* Đẩy logo và menu ra hai bên */
+}
+
+/* --- Cột Logo (Col-3) --- */
+.col-3 {
+  /* Chỉ định chiều rộng nếu không dùng hệ thống grid */
+  flex-basis: 25%;
+  max-width: 25%;
+}
+
+.inner-logo img {
+  /* Tùy chỉnh kích thước logo */
+  max-height: 50px;
+  max-width: 100%;
+  /* Chiều cao cố định */
+  width: auto;
+  display: block;
+  /* Loại bỏ khoảng trắng dưới ảnh */
+}
+
+/* --- Cột Menu (Col-9) --- */
+.col-9 {
+  /* Chỉ định chiều rộng nếu không dùng hệ thống grid */
+  flex-basis: 75%;
+  max-width: 75%;
+  text-align: right;
+  /* Đẩy menu sang phải */
+}
+
+/* --- Menu Điều Hướng --- */
+.inner-menu ul {
+  /* Xóa style mặc định của ul */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* Sử dụng Flexbox để bố cục các mục menu theo hàng ngang */
+  display: flex;
+  justify-content: flex-end;
+  /* Căn các mục sang phải */
+}
+
+.inner-menu ul li {
+  /* Khoảng cách giữa các mục menu */
+  margin-left: 30px;
+}
+
+.inner-menu ul li a {
+  /* Style cho liên kết */
+  text-decoration: none;
+  /* Xóa gạch chân */
+  color: #333333;
+  /* Màu chữ tối */
+  font-size: 16px;
+  font-weight: 500;
+  /* Độ đậm vừa phải */
+  padding: 5px 0;
+  /* Khoảng đệm cho hiệu ứng hover */
+  display: inline-block;
+
+  /* Hiệu ứng chuyển tiếp mượt mà cho màu và gạch dưới */
+  transition: color 0.3s ease, transform 0.3s ease;
+  position: relative;
+}
+
+/* --- Hiệu ứng Hover (Làm đẹp thêm) --- */
+.inner-menu ul li a:hover {
+  color: #007bff;
+  /* Thay đổi màu chữ khi di chuột */
+  transform: translateY(-2px);
+  /* Nhấc nhẹ chữ lên */
+}
+
+/* Thêm hiệu ứng gạch chân đẹp khi hover */
+.inner-menu ul li a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  /* Độ dày của gạch chân */
+  background-color: #007bff;
+  /* Màu gạch chân */
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s ease;
+  /* Hiệu ứng kéo dài mượt mà */
+}
+
+.inner-menu ul li a:hover::after {
+  width: 100%;
+  /* Gạch chân hiển thị toàn bộ chiều rộng khi hover */
+}
+
+/*end header  */
+
+
+/* --- Thiết lập chung cho Footer ---  */
+.footer {
+  /* Màu nền tối và chữ sáng để dễ đọc */
+  background-color: #333333;
+  color: #f8f8f8;
+
+  /* Căn giữa chữ */
+  text-align: center;
+
+  /* Khoảng đệm trên dưới */
+  padding: 15px 0;
+
+  /* Đảm bảo footer luôn ở cuối trang */
+  width: 100%;
+  /* Thêm các thuộc tính position: fixed/absolute nếu bạn muốn nó luôn hiển thị trên màn hình */
+  /* position: absolute; */
+  /* bottom: 0; */
+
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+/* end footer */
+
+/* box-head */
+
+.box-head {
+  /* Khoảng đệm dưới để tạo khoảng cách với nội dung bên dưới */
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  /* Khoảng cách với phần nội dung chính */
+
+  /* Đường viền dưới để phân tách rõ ràng */
+  border-bottom: 2px solid #eeeeee;
+
+  display: flex;
+  /* Dùng flexbox nếu bạn muốn căn chỉnh thêm các thành phần khác */
+  align-items: center;
+}
+
+/* --- Style cho Tiêu đề (Heading) --- */
+.box-head .inner-title {
+  color: #333333;
+  /* Màu chữ tối, dễ đọc */
+  font-size: 24px;
+  /* Kích thước tiêu đề lớn hơn */
+  font-weight: 600;
+  /* Độ đậm vừa phải, nổi bật */
+  margin: 0;
+  /* Xóa margin mặc định của thẻ h2 */
+  padding: 0;
+
+  /* Thêm một đường viền dưới nhỏ màu sắc để làm điểm nhấn */
+  position: relative;
+  padding-bottom: 10px;
+}
+
+/*end box-head */
+
+
+/* --- Style cho Khối Bài Hát (Song Item) --- */
+.song-item {
+  display: flex;
+  /* Sử dụng Flexbox để đặt ảnh và nội dung cạnh nhau */
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* Bóng đổ nhẹ */
+  padding: 10px;
+  transition: transform 0.3s ease;
+  /* Hiệu ứng di chuột */
+}
+
+.song-item:hover {
+  transform: translateY(-3px);
+  /* Nhấc nhẹ lên khi di chuột */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Style cho Khối Ảnh (Inner Image) --- */
+.inner-image {
+  flex-shrink: 0;
+  /* Không co lại */
+  width: 80px;
+  /* Kích thước cố định cho ảnh đại diện */
+  height: 80px;
+  margin-right: 15px;
+}
+
+.inner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Đảm bảo ảnh lấp đầy mà không bị méo */
+  border-radius: 6px;
+  /* Bo góc ảnh */
+}
+
+/* --- Style cho Khối Nội dung (Inner Content) --- */
+.inner-content {
+  flex-grow: 1;
+  /* Cho phép nội dung chiếm hết không gian còn lại */
+  /* Dùng Grid hoặc Flexbox cho 4 dòng nội dung */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Chia nội dung thành 2 cột */
+  grid-template-rows: auto auto;
+  /* 2 hàng tự động */
+  gap: 5px 10px;
+  /* Khoảng cách giữa các ô nội dung */
+}
+
+/* --- Tiêu đề Bài hát (Inner Title) --- */
+.inner-title {
+  grid-column: 1 / 3;
+  /* Chiếm toàn bộ 2 cột trên hàng đầu tiên */
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+  /* Ngăn xuống dòng */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inner-title a {
+  text-decoration: none;
+  color: #007bff;
+  /* Màu chữ nổi bật */
+}
+
+.inner-title a:hover {
+  text-decoration: underline;
+}
+
+/* --- Các thông tin phụ (Ca sĩ, Like, Thời gian) --- */
+.inner-singer,
+.inner-like,
+.inner-time {
+  font-size: 13px;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Căn chỉnh lại vị trí trong grid */
+.inner-singer {
+  grid-column: 1 / 2;
+  /* Cột 1 */
+}
+
+.inner-like {
+  grid-column: 2 / 3;
+  /* Cột 2 */
+  justify-content: flex-end;
+  /* Đẩy sang phải */
+}
+
+.inner-time {
+  grid-column: 1 / 3;
+  /* Cột 1 và 2 (Hàng cuối cùng) */
+}
+
+/* Style cho Icon */
+.inner-content i {
+  margin-right: 5px;
+  color: #adb5bd;
+  /* Màu icon nhẹ nhàng */
+}
