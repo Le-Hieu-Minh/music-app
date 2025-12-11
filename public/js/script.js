@@ -32,6 +32,25 @@ if (aplayer) {
   ap.on('pause', function () {
     avatar.style.animationPlayState = "paused";
   });
+  ap.on('ended', function () {
+    const like = `/songs/listen/${dataSong._id}`;
+    const option = {
+      method: "PATCH"
+    }
+    fetch(like, option)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.code == 200) {
+          const spanListen = document.querySelector(".singer-detail .inner-listen span");
+          spanListen.innerHTML = `${data.listen} lượt nghe`;
+          console.log(spanListen);
+
+        }
+
+
+      })
+  });
 }
 // End APlyaer
 
@@ -65,28 +84,80 @@ if (buttonLike) {
 
 
 // Button Favorite
-const buttonFavorite = document.querySelector("[button-favorite]");
-if (buttonFavorite) {
-  buttonFavorite.addEventListener("click", () => {
-    const idSong = buttonFavorite.getAttribute("button-favorite");
-    const isActive = buttonFavorite.classList.contains("active");
-    console.log(isActive);
-    const typeFavorite = isActive ? "unfavorite" : "favorite";
+const listButtonFavorite = document.querySelectorAll("[button-favorite]");
+if (listButtonFavorite) {
+  listButtonFavorite.forEach((buttonFavorite) => {
+    buttonFavorite.addEventListener("click", () => {
+      const idSong = buttonFavorite.getAttribute("button-favorite");
+      const isActive = buttonFavorite.classList.contains("active");
 
-    const link = `/songs/favorite/${typeFavorite}/${idSong}`;
-    const option = {
-      method: "PATCH"
-    }
-    fetch(link, option)
-      .then(res => res.json())
-      .then(data => {
-        if (data.code == 200) {
-          buttonFavorite.classList.toggle("active");
+      const typeFavorite = isActive ? "unfavorite" : "favorite";
 
-        }
-      })
-  })
+      const link = `/songs/favorite/${typeFavorite}/${idSong}`;
+      const option = {
+        method: "PATCH"
+      }
+      fetch(link, option)
+        .then(res => res.json())
+        .then(data => {
+          if (data.code == 200) {
+            buttonFavorite.classList.toggle("active");
+
+          }
+        })
+    })
+  });
+
 
 }
 
 // End Button Favorite
+
+// search suggest
+const boxSearch = document.querySelector(".box-search");
+if (boxSearch) {
+  const input = boxSearch.querySelector("input[name='keyword']");
+  const boxSuggest = boxSearch.querySelector(".inner-suggest");
+
+  input.addEventListener("keyup", () => {
+    const keyword = input.value;
+
+
+    const link = `/search/suggest?keyword=${keyword}`;
+
+    fetch(link)
+      .then(res => res.json())
+      .then(data => {
+        if (data.code == 200) {
+          const songs = data.songs;
+          if (songs.length > 0) {
+            boxSuggest.classList.add("show");
+            const html = songs.map((song) => {
+              return `
+              <a href="/songs/detail/${song.slug}" class="inner-item">
+                <div class="inner-image">
+                  <img src="${song.avatar}">
+                </div>
+                <div class="inner-info">
+                  <div class="inner-title">${song.title}</div>
+                  <div class="inner-singer">
+                    <i class="fa-solid fa-microphone-lines"></i>
+                    ${song.infoSinger.fullName}
+                  </div>
+                </div>
+              </a>
+              `;
+
+            });
+            const boxList = boxSuggest.querySelector(".inner-list");
+            boxList.innerHTML = html.join("");
+          } else {
+            boxSuggest.classList.remove("show");
+          }
+
+        }
+      })
+  })
+}
+
+// end search suggest

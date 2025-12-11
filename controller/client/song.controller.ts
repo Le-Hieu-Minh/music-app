@@ -129,3 +129,37 @@ export const favorite = async (req: Request, res: Response) => {
   })
 
 };
+
+//[PATCH] /listen/:idSong
+export const listen = async (req: Request, res: Response) => {
+
+  const idSong: string = req.params.idSong;
+  // Giả định Song Model đã được import
+
+  // 1. Tìm bài hát hiện tại
+  const song = await Song.findOne({
+    _id: idSong
+  });
+
+  // 2. Tính lượt nghe mới
+  const listen: number = song.listen + 1;
+
+  // 3. Cập nhật lượt nghe trong database
+  await Song.updateOne({
+    _id: idSong
+  }, {
+    listen: listen
+  });
+
+  // 4. Lấy lại dữ liệu mới sau khi cập nhật
+  const songNew = await Song.findOne({
+    _id: idSong
+  });
+
+  // 5. Trả về JSON response
+  res.json({
+    code: 200,
+    message: "Thành công!",
+    listen: songNew.listen
+  });
+};

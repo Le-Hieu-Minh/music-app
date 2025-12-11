@@ -462,3 +462,132 @@
 
 
 /* end trang nhac detail */
+
+/* Box Search)*/
+.box-search {
+  position: relative;
+  /* Quan trọng để định vị danh sách gợi ý */
+  max-width: 450px;
+  /* Giới hạn chiều rộng nếu cần */
+  margin: 0 auto;
+}
+
+/* --- Thanh tìm kiếm và nút (Form Group) --- */
+.form-group {
+  /* Đảm bảo flexbox cho input và button đã được thiết lập bởi d-flex (Bootstrap) */
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  /* Bo góc tròn cho thanh tìm kiếm */
+  overflow: hidden;
+  /* Cắt góc nếu input/button không được bo góc */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.box-search .form-control {
+  border: none;
+  /* Xóa viền mặc định */
+  box-shadow: none;
+  padding: 10px 20px;
+  height: 45px;
+}
+
+.box-search .btn-primary {
+  /* Style cho nút tìm kiếm */
+  background-color: #007bff;
+  border-color: #007bff;
+  padding: 0 25px;
+  flex-shrink: 0;
+  /* Không cho nút co lại */
+  height: 45px;
+  border-radius: 0 50px 50px 0;
+  /* Bo góc chỉ phía bên phải */
+  transition: background-color 0.3s ease;
+}
+
+/* --- Danh sách gợi ý (Inner Suggest) --- */
+.inner-suggest {
+  position: absolute;
+  top: 100%;
+  /* Đặt ngay dưới thanh tìm kiếm */
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* Bóng đổ mạnh hơn để nổi bật */
+  max-height: 400px;
+  /* Giới hạn chiều cao cho danh sách */
+  overflow-y: auto;
+  /* Thêm thanh cuộn nếu quá dài */
+  padding: 10px 0;
+  display: none;
+  /* Mặc định ẩn, chỉ hiển thị khi có class .show */
+  transform: translateY(10px);
+  /* Dịch chuyển xuống một chút */
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.inner-suggest.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Từng mục gợi ý (Inner Item) --- */
+.inner-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+.inner-item:hover {
+  background-color: #f1f1f1;
+  /* Nền xám nhạt khi di chuột */
+}
+
+/* --- Ảnh bìa nhỏ (Inner Image) --- */
+.inner-image {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.inner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  /* Bo góc ảnh nhỏ */
+}
+
+/* --- Thông tin bài hát (Inner Info) --- */
+.inner-info {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.inner-title {
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inner-singer {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+.inner-singer i {
+  margin-right: 4px;
+  color: #adb5bd;
+}
+
+/*End Box Search)*/
