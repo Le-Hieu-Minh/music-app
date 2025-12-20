@@ -7,6 +7,7 @@ if (aplayer) {
   dataSinger = JSON.parse(dataSinger);
 
 
+
   const ap = new APlayer({
     container: aplayer, // ID của thẻ div trong file Pug
     fixed: false,
@@ -16,11 +17,13 @@ if (aplayer) {
     order: 'random',
     preload: 'auto',
     volume: 0.7,
+    lrcType: 1,
     audio: [{
       name: dataSong.title, // Tên bài hát
       artist: dataSinger.fullName, // Tên ca sĩ
       url: dataSong.audio, // Link file audio
       cover: dataSong.avatar, // Link ảnh cover
+      lrc: `${dataSong.lyrics}`
     }]
   });
   const avatar = document.querySelector(".inner-avatar img");
