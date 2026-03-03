@@ -145,3 +145,16 @@ export const detail = async (req: Request, res: Response) => {
     detailSong: detailSong
   });
 };
+
+//[PATCH] /admin/changeStatus/:status/:id
+export const changeStatus = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const status = req.params.status;
+  await Song.updateOne({ _id: id }, {
+    status: status
+  });
+  res.json({
+    code: 200,
+    message: "Thay đổi status thành công!"
+  })
+};

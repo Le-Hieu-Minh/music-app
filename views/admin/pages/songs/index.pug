@@ -33,16 +33,22 @@ block main
                         height="auto"
                       )
                     td #{item.title}
-                    td
+                    td(td-status)
                       if (item.status === "active")
                         a(
                           href="javascript:;"
                           class="badge badge-success"
+                          button-status
+                          data-status=item.status
+                          data-id=item.id
                         ) Hoạt động
                       else
                         a(
                           href="javascript:;"
                           class="badge badge-danger"
+                          button-status
+                          data-status=item.status
+                          data-id=item.id
                         ) Dừng hoạt động
                     td
                       a(

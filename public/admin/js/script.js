@@ -59,9 +59,35 @@ deleteButton.forEach(buttonDelete => {
 
   })
 });
-
-
-
-
-
 //end delete_song
+
+//changeStatus
+const buttonChangeStatus = document.querySelectorAll("[button-status]");
+buttonChangeStatus.forEach(button => {
+  button.addEventListener("click", () => {
+    const id = button.getAttribute("data-id");
+    const statusCurrent = button.getAttribute("data-status");
+    const statusChange = statusCurrent === "active" ? "inactive" : "active";
+    const url = `/admin/songs/changeStatus/${statusChange}/${id}`;
+
+    fetch(url, { method: "PATCH" })
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          button.setAttribute("data-status", statusChange);
+          if (statusChange === "active") {
+            button.innerHTML = "Hoạt động";
+            button.classList.remove("badge-danger");
+            button.classList.add("badge-success");
+          } else {
+            button.innerHTML = "Dừng hoạt động";
+            button.classList.remove("badge-success");
+            button.classList.add("badge-danger");
+          }
+        }
+      })
+  })
+})
+
+//end changeStatus
+

@@ -28,4 +28,6 @@ router.patch("/delete/:id", controller.deleteItem);
 
 router.get("/detail/:id", controller.detail);
 
+router.patch("/changeStatus/:status/:id", controller.changeStatus);
+
 export const songRoutes: Router = router;
