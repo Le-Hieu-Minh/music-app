@@ -99,11 +99,6 @@ export const edit = async (req: Request, res: Response) => {
 export const editPatch = async (req: Request, res: Response) => {
   const id = req.params.id;
 
-
-
-
-
-
   const dataSong = {
     title: req.body.title,
     topicId: req.body.topicId,
@@ -123,4 +118,30 @@ export const editPatch = async (req: Request, res: Response) => {
   }, dataSong);
 
   res.redirect(req.get('Referer'))
+};
+
+//[Patch] /admin/editPatch
+export const deleteItem = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const song = await Song.updateOne({ _id: id }, {
+    deleted: true,
+  });
+
+  res.json({
+    code: 200,
+    message: "Xoa thanh cong",
+    song: song
+  })
+};
+
+
+//[GET] /admin/detail/:id
+export const detail = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const detailSong = await Song.findOne({ _id: id });
+
+  res.render("admin/pages/songs/detail", {
+    detailSong: detailSong
+  });
 };

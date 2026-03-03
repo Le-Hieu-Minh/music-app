@@ -35,3 +35,33 @@ if (uploadAudio) {
   });
 }
 // End Upload Audio
+
+//delete_song
+const deleteButton = document.querySelectorAll("[button-delete]");
+deleteButton.forEach(buttonDelete => {
+  buttonDelete.addEventListener("click", () => {
+    const idSong = buttonDelete.getAttribute("data-id");
+    const url = `/admin/songs/delete/${idSong}`;
+    const option = {
+      method: "PATCH"
+    }
+    fetch(url, option)
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          const itemRow = buttonDelete.closest("tr");
+          itemRow.remove();
+
+        }
+
+      })
+
+
+  })
+});
+
+
+
+
+
+//end delete_song

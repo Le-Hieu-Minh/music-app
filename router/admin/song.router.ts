@@ -24,4 +24,8 @@ router.patch("/edit/:id", upload.fields(
   ]
 ), uploadClound.uploadFields, controller.editPatch);
 
+router.patch("/delete/:id", controller.deleteItem);
+
+router.get("/detail/:id", controller.detail);
+
 export const songRoutes: Router = router;

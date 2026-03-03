@@ -55,12 +55,14 @@ export const detail = async (req: Request, res: Response) => {
   const topic = await Topic.findOne({
     _id: song.topicId,
     deleted: false
-  }).select("title")
+  }).select("title");
+
   const favoriteSong = await FavoriteSong.findOne({
     songId: song.id
   });
 
   song["favoriteSong"] = favoriteSong ? true : false;
+
 
   res.render("client/pages/songs/detail", {
     pageTitle: "Chi tiết bài hát",
