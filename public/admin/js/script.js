@@ -91,3 +91,55 @@ buttonChangeStatus.forEach(button => {
 
 //end changeStatus
 
+//delete_topic
+const deleteButtonTopic = document.querySelectorAll("[button-delete]");
+deleteButtonTopic.forEach(buttonDelete => {
+  buttonDelete.addEventListener("click", () => {
+    const idTopic = buttonDelete.getAttribute("data-id");
+    const url = `/admin/topics/delete/${idTopic}`;
+    const option = {
+      method: "DELETE"
+    }
+    fetch(url, option)
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          const itemRow = buttonDelete.closest("tr");
+          itemRow.remove();
+
+        }
+
+      })
+  })
+});
+//end delete_topic
+
+//changeStatus
+const buttonChangeStatusTopic = document.querySelectorAll("[button-status]");
+buttonChangeStatusTopic.forEach(button => {
+  button.addEventListener("click", () => {
+    const id = button.getAttribute("data-id");
+    const statusCurrent = button.getAttribute("data-status");
+    const statusChange = statusCurrent === "active" ? "inactive" : "active";
+    const url = `/admin/topics/changeStatus/${statusChange}/${id}`;
+
+    fetch(url, { method: "PATCH" })
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          button.setAttribute("data-status", statusChange);
+          if (statusChange === "active") {
+            button.innerHTML = "Hoạt động";
+            button.classList.remove("badge-danger");
+            button.classList.add("badge-success");
+          } else {
+            button.innerHTML = "Dừng hoạt động";
+            button.classList.remove("badge-success");
+            button.classList.add("badge-danger");
+          }
+        }
+      })
+  })
+})
+
+//end changeStatus

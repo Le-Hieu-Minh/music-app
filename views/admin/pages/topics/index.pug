@@ -35,11 +35,17 @@ block main
                         a(
                           href="javascript:;"
                           class="badge badge-success"
+                          button-status
+                          data-status=item.status
+                          data-id=item.id
                         ) Hoạt động
                       else
                         a(
                           href="javascript:;"
                           class="badge badge-danger"
+                          button-status
+                          data-status=item.status
+                          data-id=item.id
                         ) Dừng hoạt động
                     td
                       a(

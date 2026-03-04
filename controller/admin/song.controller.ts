@@ -130,7 +130,7 @@ export const deleteItem = async (req: Request, res: Response) => {
 
   res.json({
     code: 200,
-    message: "Xoa thanh cong",
+    message: "Xóa thành công",
     song: song
   })
 };
@@ -146,7 +146,7 @@ export const detail = async (req: Request, res: Response) => {
   });
 };
 
-//[PATCH] /admin/changeStatus/:status/:id
+//[PATCH] /admin/songs/changeStatus/:status/:id
 export const changeStatus = async (req: Request, res: Response) => {
   const id = req.params.id;
   const status = req.params.status;

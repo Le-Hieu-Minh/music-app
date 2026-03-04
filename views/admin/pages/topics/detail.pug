@@ -1,0 +1,43 @@
+extends ../../layouts/default.pug
+
+block main
+    if (detailTopic)
+    h1(class="mb-4") Chi tiết chủ đề: #{detailTopic.title}
+
+    .card.mb-4
+      .card-header Thông tin chung
+      .card-body
+        .row
+          .col-md-4.text-center
+            img(
+              src=detailTopic.avatar
+              alt=detailTopic.title
+              class="img-thumbnail mb-3"
+              style="width: 250px; height: auto;"
+            )
+          
+          .col-md-8
+            h2(class="mb-3") #{detailTopic.title}
+
+            div(class="mb-3")
+              span Trạng thái: 
+              if (detailTopic.status === "active")
+                span(class="badge badge-success") Hoạt động
+              else
+                span(class="badge badge-danger") Dừng hoạt động
+
+
+            div(class="mb-3")
+              i(class="fa-solid fa-thumbs-up mr-1")
+              b Mô tả: !{detailTopic.description}
+           
+           
+            div(class="mt-4")
+              a(
+                href=`/${prefixAdmin}/topics/edit/${detailTopic.id}`
+                class="btn btn-warning"
+              ) 
+                i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa bài hát
+
+    
+    a(href=`/${prefixAdmin}/topics` class="btn btn-secondary mt-3") Quay lại
