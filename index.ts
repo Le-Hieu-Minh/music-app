@@ -6,6 +6,7 @@ import { systemConfig } from "./config/config";
 import path from "path";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
+import cookieParser from "cookie-parser"
 
 import clientRoutes from "./router/client/index.router";
 import adminRoutes from "./router/admin/index.router";
@@ -26,6 +27,8 @@ app.set("view engine", "pug");
 app.use(methodOverride('_method'))
 
 app.use(bodyParser.urlencoded())
+
+app.use(cookieParser())
 
 
 app.use(express.static(`public`));

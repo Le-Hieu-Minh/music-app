@@ -158,3 +158,4 @@ export const changeStatus = async (req: Request, res: Response) => {
     message: "Thay đổi status thành công!"
   })
 };
+//phần like không lưu số mà lưu mảng id của ng đã like
