@@ -1,0 +1,69 @@
+extends ../../layouts/default.pug
+
+block main
+  h1(class="mb-4") #{pageTitle}
+
+  form(
+    action=`/${prefixAdmin}/singers/edit/${singers.id}?_method=PATCH`
+    method="POST"
+    enctype="multipart/form-data"
+  )
+
+    div(class="form-group")
+      label(for="fullName") Tên
+      input(
+        type="text"
+        class="form-control"
+        id="fullName"
+        name="fullName"
+        value=singers.fullName
+        required
+      )
+
+
+    div(class="form-group" upload-image)
+      label(for="avatar") Ảnh
+      input(
+        type="file"
+        class="form-control-file"
+        id="avatar"
+        name="avatar"
+        accept="image/*"
+        upload-image-input
+      )
+      img(
+        src=singers.avatar
+        class="image-preview"
+        upload-image-preview
+      )
+
+    
+  
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="statusActive"
+        name="status"
+        value="active"
+        checked=(singers.status=="active"?true:false)
+      )
+      label(for="statusActive" class="form-check-label") Hoạt động
+    
+    div(class="form-check form-check-inline")
+          input(
+            type="radio"
+            class="form-check-input"
+            id="statusInActive"
+            name="status"
+            value="inactive"
+            checked=(singers.status=="inactive"?true:false)
+          )
+          label(for="statusInActive" class="form-check-label") Dừng hoạt động
+
+
+    div(class="form-group")
+      button(
+        type="submit"
+        class="btn btn-primary"
+      ) Sửa

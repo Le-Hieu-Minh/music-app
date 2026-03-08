@@ -1,0 +1,39 @@
+extends ../../layouts/default.pug
+
+block main
+    if (detailSinger)
+    h1(class="mb-4") Chi tiết chủ đề: #{detailSinger.title}
+
+    .card.mb-4
+      .card-header Thông tin chung
+      .card-body
+        .row
+          .col-md-4.text-center
+            img(
+              src=detailSinger.avatar
+              alt=detailSinger.title
+              class="img-thumbnail mb-3"
+              style="width: 250px; height: auto;"
+            )
+          
+          .col-md-8
+            h2(class="mb-3") #{detailSinger.fullName}
+
+            div(class="mb-3")
+              span Trạng thái: 
+              if (detailSinger.status === "active")
+                span(class="badge badge-success") Hoạt động
+              else
+                span(class="badge badge-danger") Dừng hoạt động
+
+
+           
+            div(class="mt-4")
+              a(
+                href=`/${prefixAdmin}/singers/edit/${detailSinger.id}`
+                class="btn btn-warning"
+              ) 
+                i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa bài hát
+
+    
+    a(href=`/${prefixAdmin}/singers` class="btn btn-secondary mt-3") Quay lại

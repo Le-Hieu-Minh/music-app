@@ -42,7 +42,7 @@ export const loginPost = async (req: Request, res: Response) => {
     id: user.id,
     role_id: user.role_id
 
-  }, process.env.JWT_ACCESS_KEY, { algorithm: 'HS256', expiresIn: '3h' });
+  }, process.env.JWT_ACCESS_KEY, { algorithm: 'HS256', expiresIn: '365d' });
 
 
   res.cookie('token', userToken);

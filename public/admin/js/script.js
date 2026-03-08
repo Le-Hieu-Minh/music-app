@@ -61,7 +61,7 @@ deleteButton.forEach(buttonDelete => {
 });
 //end delete_song
 
-//changeStatus
+//changeStatus_song
 const buttonChangeStatus = document.querySelectorAll("[button-status]");
 buttonChangeStatus.forEach(button => {
   button.addEventListener("click", () => {
@@ -89,7 +89,62 @@ buttonChangeStatus.forEach(button => {
   })
 })
 
-//end changeStatus
+//end changeStatus_song
+
+//delete_singer
+const deleteButtonSinger = document.querySelectorAll("[button-delete]");
+deleteButtonSinger.forEach(buttonDelete => {
+  buttonDelete.addEventListener("click", () => {
+    const idTopic = buttonDelete.getAttribute("data-id");
+    const url = `/admin/singers/delete/${idTopic}`;
+    const option = {
+      method: "DELETE"
+    }
+    fetch(url, option)
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          const itemRow = buttonDelete.closest("tr");
+          itemRow.remove();
+
+        }
+
+      })
+  })
+});
+//end delete_singer
+
+//changeStatus_singer
+const buttonChangeStatusSinger = document.querySelectorAll("[button-status]");
+buttonChangeStatusSinger.forEach(button => {
+  button.addEventListener("click", () => {
+    const id = button.getAttribute("data-id");
+    const statusCurrent = button.getAttribute("data-status");
+    const statusChange = statusCurrent === "active" ? "inactive" : "active";
+    const url = `/admin/singers/changeStatus/${statusChange}/${id}`;
+
+    fetch(url, { method: "PATCH" })
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          button.setAttribute("data-status", statusChange);
+          if (statusChange === "active") {
+            button.innerHTML = "Hoạt động";
+            button.classList.remove("badge-danger");
+            button.classList.add("badge-success");
+          } else {
+            button.innerHTML = "Dừng hoạt động";
+            button.classList.remove("badge-success");
+            button.classList.add("badge-danger");
+          }
+        }
+      })
+  })
+})
+
+//end changeStatus_singer
+
+
 
 //delete_topic
 const deleteButtonTopic = document.querySelectorAll("[button-delete]");
@@ -114,7 +169,7 @@ deleteButtonTopic.forEach(buttonDelete => {
 });
 //end delete_topic
 
-//changeStatus
+//changeStatus_topic
 const buttonChangeStatusTopic = document.querySelectorAll("[button-status]");
 buttonChangeStatusTopic.forEach(button => {
   button.addEventListener("click", () => {
@@ -142,4 +197,4 @@ buttonChangeStatusTopic.forEach(button => {
   })
 })
 
-//end changeStatus
+//end changeStatus_topic
