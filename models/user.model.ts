@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import * as generate from "../helper/generate";
 const userSchema = new mongoose.Schema(
   {
     fullName: String,
@@ -7,25 +7,25 @@ const userSchema = new mongoose.Schema(
     password: String,
     tokenUser: {
       type: String,
-      // default: generate.generateRandomString(20)
+      default: generate.generateRandomString(20),
     },
     avatar: String,
     status: {
       type: String,
-      default: 'active'
+      default: "active",
     },
 
     deleted: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    deleteAt: Date
+    deleteAt: Date,
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
-const User = mongoose.model('User', userSchema, 'users');
+const User = mongoose.model("User", userSchema, "users");
 
 export default User;

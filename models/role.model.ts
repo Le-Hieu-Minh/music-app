@@ -2,27 +2,24 @@ import mongoose from "mongoose";
 import slug from "mongoose-slug-updater";
 
 mongoose.plugin(slug);
-const topicSchema = new mongoose.Schema(
+const roleSchema = new mongoose.Schema(
   {
     title: String,
-    avatar: String,
     description: String,
-    status: String,
-    slug: {
-      type: String,
-      slug: "title",
-      unique: true,
+    permissions: {
+      type: Array,
+      default: [],
     },
     deleted: {
       type: Boolean,
       default: false,
     },
-    deletedAt: Date,
+    deleteAt: Date,
   },
   {
     timestamps: true,
   },
 );
 
-const Topic = mongoose.model("Topic", topicSchema, "topics");
-export default Topic;
+const Role = mongoose.model("Role", roleSchema, "roles");
+export default Role;

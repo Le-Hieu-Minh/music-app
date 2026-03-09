@@ -1,0 +1,28 @@
+extends ../../layouts/default.pug
+
+block main
+  h2 Thông tin cá nhân
+
+  if user.avatar
+    img(src=user.avatar, width="100", class="rounded")
+
+  if user.email
+    p
+      b Email:#{user.email}
+
+  if user.phone
+    p
+      b Số điện thoại:#{user.phone}
+
+  if user.status
+    p
+      b Trạng thái:
+      span.text-success Hoạt động
+  else
+    span.text-danger Dừng hoạt động
+
+  if role.title
+    p
+      b Vai trò:#{role.title}
+
+  a.btn.btn-primary(href=`/${prefixAdmin}/my-account/edit`) Chỉnh sửa thông tin

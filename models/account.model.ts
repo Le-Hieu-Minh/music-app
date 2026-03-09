@@ -1,5 +1,5 @@
-import mongoose from "mongoose"
-
+import mongoose from "mongoose";
+import * as generate from "../helper/generate";
 const accountSchema = new mongoose.Schema(
   {
     fullName: String,
@@ -7,7 +7,7 @@ const accountSchema = new mongoose.Schema(
     password: String,
     token: {
       type: String,
-      // default: generate.generateRandomString(20)
+      default: generate.generateRandomString(20),
     },
     phone: String,
     avatar: String,
@@ -15,15 +15,15 @@ const accountSchema = new mongoose.Schema(
     status: String,
     deleted: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    deleteAt: Date
+    deleteAt: Date,
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
-const Account = mongoose.model('Account', accountSchema, 'accounts');
+const Account = mongoose.model("Account", accountSchema, "accounts");
 
 export default Account;
