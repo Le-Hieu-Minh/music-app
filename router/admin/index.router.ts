@@ -7,6 +7,7 @@ import { singerRoutes } from "./singer.router";
 import { myAccountRoutes } from "./my-account.router";
 import { uploadRoutes } from "./upload.router";
 import { authRoutes } from "./auth.router";
+import { RoleRoutes } from "./role.router";
 import * as authMiddleware from "../../middlewares/admin/auth.middleware";
 
 const adminRoutes = (app: Express): void => {
@@ -24,6 +25,7 @@ const adminRoutes = (app: Express): void => {
     authMiddleware.requireAuth,
     myAccountRoutes,
   );
+  app.use(`${PATH_ADMIN}/roles`, authMiddleware.requireAuth, RoleRoutes);
 
   app.use(`${PATH_ADMIN}/upload`, uploadRoutes);
 

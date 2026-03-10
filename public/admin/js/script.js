@@ -198,3 +198,27 @@ buttonChangeStatusTopic.forEach(button => {
 })
 
 //end changeStatus_topic
+
+//delete Role
+const deleteButtonRole = document.querySelectorAll("[button-delete]");
+deleteButtonRole.forEach(buttonDelete => {
+  buttonDelete.addEventListener("click", () => {
+    const idRole = buttonDelete.getAttribute("data-id");
+    const url = `/admin/roles/delete/${idRole}`;
+    const option = {
+      method: "PATCH"
+    }
+    fetch(url, option)
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          const itemRow = buttonDelete.closest("tr");
+          itemRow.remove();
+
+        }
+
+      })
+  })
+});
+
+//end delete Role

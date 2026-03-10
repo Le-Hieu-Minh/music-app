@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug
+
+block main
+    if (detailRole)
+      h1(class="mb-4")  #{detailRole.title}
+
+      .card.mb-4
+        .card-header Thông tin chung
+        .card-body
+          .row
+            .col-md-4.text-center
+              img(
+                src="/admin/img/hicveldicta.png"
+                alt="user"
+                class="img-thumbnail mb-3"
+                style="width: 250px; height: auto;"
+              )
+            
+            .col-md-8
+              h2(class="mb-3") #{detailRole.title}
+
+              div(class="mt-4")
+                a(
+                  href=`/${prefixAdmin}/roles/edit/${detailRole.id}`
+                  class="btn btn-warning"
+                ) 
+                  i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa quyền
+
+      
+
+          .row
+            .col-12
+              div Mô tả quyền
+                .inner-description.border.p-3.bg-light.rounded
+                  | !{detailRole.description}
+          .row
+            .col-12
+              div chi tiết quyền
+                .inner-description.border.p-3.bg-light.rounded
+                  | !{detailRole.permissions}
+
+          
+
+      a(href=`/${prefixAdmin}/roles` class="btn btn-secondary mt-3") Quay lại

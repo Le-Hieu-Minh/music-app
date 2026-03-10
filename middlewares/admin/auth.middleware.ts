@@ -8,11 +8,7 @@ import { systemConfig } from "../../config/config";
 import Role from "../../models/role.model";
 
 dotenv.config();
-export const requireAuth = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.cookies.token) {
     res.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
   } else {

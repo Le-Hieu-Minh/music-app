@@ -94,12 +94,12 @@ export const deleteItem = async (req: Request, res: Response) => {
   const topic = await Topic.updateOne({ _id: id }, {
     deleted: true
   });
-
-
-  res.json({
-    code: 200,
-    message: "Xóa thành công",
-  })
+  if (topic) {
+    res.json({
+      code: 200,
+      message: "Xóa thành công",
+    })
+  }
 }
 
 //[DELETE] /admin/topics/detail/:id
