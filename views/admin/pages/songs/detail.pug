@@ -1,63 +1,67 @@
 extends ../../layouts/default.pug
 
 block main
+  if(role.permissions.includes('music_view'))
     if (detailSong)
-    h1(class="mb-4") Chi tiết bài hát: #{detailSong.title}
+      h1(class="mb-4") Chi tiết bài hát: #{detailSong.title}
 
-    .card.mb-4
-      .card-header Thông tin chung
-      .card-body
-        .row
-          .col-md-4.text-center
-            img(
-              src=detailSong.avatar
-              alt=detailSong.title
-              class="img-thumbnail mb-3"
-              style="width: 250px; height: auto;"
-            )
-          
-          .col-md-8
-            h2(class="mb-3") #{detailSong.title}
+      .card.mb-4
+        .card-header Thông tin chung
+        .card-body
+          .row
+            .col-md-4.text-center
+              img(
+                src=detailSong.avatar
+                alt=detailSong.title
+                class="img-thumbnail mb-3"
+                style="width: 250px; height: auto;"
+              )
+            
+            .col-md-8
+              h2(class="mb-3") #{detailSong.title}
 
-            div(class="mb-3")
-              span Trạng thái: 
-              if (detailSong.status === "active")
-                span(class="badge badge-success") Hoạt động
-              else
-                span(class="badge badge-danger") Dừng hoạt động
+              div(class="mb-3")
+                span Trạng thái: 
+                if (detailSong.status === "active")
+                  span(class="badge badge-success") Hoạt động
+                else
+                  span(class="badge badge-danger") Dừng hoạt động
 
 
-            div(class="mb-3")
-              i(class="fa-solid fa-thumbs-up mr-1")
-              b Lượt thích: #{detailSong.like}
+              div(class="mb-3")
+                i(class="fa-solid fa-thumbs-up mr-1")
+                b Lượt thích: #{detailSong.like}
 
-           
-            div(class="mt-4")
-              a(
-                href=`/${prefixAdmin}/songs/edit/${detailSong.id}`
-                class="btn btn-warning"
-              ) 
-                i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa bài hát
+            
+              div(class="mt-4")
+                if(role.permissions.includes('music_edit'))
+                  a(
+                    href=`/${prefixAdmin}/songs/edit/${detailSong.id}`
+                    class="btn btn-warning"
+                  ) 
+                    i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa bài hát
 
-      
+        
 
-        .row
-          .col-12
-            div File âm thanh
-              audio(controls class="w-100 mb-4")
-                source(src=detailSong.audio type="audio/mpeg")
-                | Trình duyệt của bạn không hỗ trợ phát âm thanh.
+          .row
+            .col-12
+              div File âm thanh
+                audio(controls class="w-100 mb-4")
+                  source(src=detailSong.audio type="audio/mpeg")
+                  | Trình duyệt của bạn không hỗ trợ phát âm thanh.
 
-        .row
-          .col-12
-            div Mô tả bài hát
-              .inner-description.border.p-3.bg-light.rounded
-                | !{detailSong.description}
+          .row
+            .col-12
+              div Mô tả bài hát
+                .inner-description.border.p-3.bg-light.rounded
+                  | !{detailSong.description}
 
-        .row.mt-4
-          .col-12
-            div Lời bài hát (Lyrics)
-              .inner-lyrics.p-3.bg-light.rounded(style="white-space: pre-wrap;")
-                | !{detailSong.lyrics}
+          .row.mt-4
+            .col-12
+              div Lời bài hát (Lyrics)
+                .inner-lyrics.p-3.bg-light.rounded(style="white-space: pre-wrap;")
+                  | !{detailSong.lyrics}
 
-    a(href=`/${prefixAdmin}/songs` class="btn btn-secondary mt-3") Quay lại
+      a(href=`/${prefixAdmin}/songs` class="btn btn-secondary mt-3") Quay lại
+  else
+    h1 Bạn ko có quyền xem chi tiết bài hát

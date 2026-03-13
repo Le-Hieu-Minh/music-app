@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 
 block main
+  if(role.permissions.includes('music_view'))
     h1(class="mb-4") #{pageTitle}
     .card.mb-3
         .card-header Danh sách
@@ -8,6 +9,7 @@ block main
             .row
                 .col-8
                 .col-4.text-right
+                  if(role.permissions.includes('music_create'))
                     a(href=`/${prefixAdmin}/songs/create` class="btn btn-outline-success") + Thêm mới
             
             table(class="table table-hover table-sm")
@@ -51,16 +53,21 @@ block main
                           data-id=item.id
                         ) Dừng hoạt động
                     td
-                      a(
-                        class="btn btn-secondary btn-sm"
-                        href=`/${prefixAdmin}/songs/detail/${item.id}`
-                      ) Chi tiết
-                      a(
-                        class="btn btn-warning btn-sm ml-1"
-                        href=`/${prefixAdmin}/songs/edit/${item.id}`
-                      ) Sửa
-                      button(
-                        class="btn btn-danger btn-sm ml-1"
-                        button-delete
-                        data-id=item.id
-                      ) Xóa
+                      if(role.permissions.includes('music_view'))
+                        a(
+                          class="btn btn-secondary btn-sm"
+                          href=`/${prefixAdmin}/songs/detail/${item.id}`
+                        ) Chi tiết
+                      if(role.permissions.includes('music_edit'))
+                        a(
+                          class="btn btn-warning btn-sm ml-1"
+                          href=`/${prefixAdmin}/songs/edit/${item.id}`
+                        ) Sửa
+                      if(role.permissions.includes('music_delete'))
+                        button(
+                          class="btn btn-danger btn-sm ml-1"
+                          button-delete
+                          data-id=item.id
+                        ) Xóa
+  else
+    h1 Bạn ko có quyền xem chi tiết các bài hát

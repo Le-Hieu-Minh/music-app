@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 
 block main
+  if(role.permissions.includes('roles_view'))
     if (detailRole)
       h1(class="mb-4")  #{detailRole.title}
 
@@ -20,11 +21,12 @@ block main
               h2(class="mb-3") #{detailRole.title}
 
               div(class="mt-4")
-                a(
-                  href=`/${prefixAdmin}/roles/edit/${detailRole.id}`
-                  class="btn btn-warning"
-                ) 
-                  i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa quyền
+                if(role.permissions.includes('roles_edit'))
+                  a(
+                    href=`/${prefixAdmin}/roles/edit/${detailRole.id}`
+                    class="btn btn-warning"
+                  ) 
+                    i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa quyền
 
       
 
@@ -42,3 +44,6 @@ block main
           
 
       a(href=`/${prefixAdmin}/roles` class="btn btn-secondary mt-3") Quay lại
+
+  else 
+    h1 bạn ko có quyền xem chi tiết

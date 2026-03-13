@@ -1,39 +1,44 @@
 extends ../../layouts/default.pug
 
 block main
+  if(role.permissions.includes('singer_view'))
     if (detailSinger)
-    h1(class="mb-4") Chi tiết chủ đề: #{detailSinger.title}
+      h1(class="mb-4") Chi tiết chủ đề: #{detailSinger.title}
 
-    .card.mb-4
-      .card-header Thông tin chung
-      .card-body
-        .row
-          .col-md-4.text-center
-            img(
-              src=detailSinger.avatar
-              alt=detailSinger.title
-              class="img-thumbnail mb-3"
-              style="width: 250px; height: auto;"
-            )
-          
-          .col-md-8
-            h2(class="mb-3") #{detailSinger.fullName}
+      .card.mb-4
+        .card-header Thông tin chung
+        .card-body
+          .row
+            .col-md-4.text-center
+              img(
+                src=detailSinger.avatar
+                alt=detailSinger.title
+                class="img-thumbnail mb-3"
+                style="width: 250px; height: auto;"
+              )
+            
+            .col-md-8
+              h2(class="mb-3") #{detailSinger.fullName}
 
-            div(class="mb-3")
-              span Trạng thái: 
-              if (detailSinger.status === "active")
-                span(class="badge badge-success") Hoạt động
-              else
-                span(class="badge badge-danger") Dừng hoạt động
+              div(class="mb-3")
+                span Trạng thái: 
+                if (detailSinger.status === "active")
+                  span(class="badge badge-success") Hoạt động
+                else
+                  span(class="badge badge-danger") Dừng hoạt động
 
 
-           
-            div(class="mt-4")
-              a(
-                href=`/${prefixAdmin}/singers/edit/${detailSinger.id}`
-                class="btn btn-warning"
-              ) 
-                i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa bài hát
+            
+              div(class="mt-4")
+                if(role.permissions.includes('singer_edit'))
+                  a(
+                    href=`/${prefixAdmin}/singers/edit/${detailSinger.id}`
+                    class="btn btn-warning"
+                  ) 
+                    i(class="fa-solid fa-pen-to-square mr-1") Chỉnh sửa ca sỹ
 
-    
-    a(href=`/${prefixAdmin}/singers` class="btn btn-secondary mt-3") Quay lại
+      
+      a(href=`/${prefixAdmin}/singers` class="btn btn-secondary mt-3") Quay lại
+
+  else
+    h1 Bạn không có quyền xem chi tiết ca sỹ

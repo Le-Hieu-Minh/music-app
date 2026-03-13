@@ -27,6 +27,7 @@ app.set("view engine", "pug");
 app.use(methodOverride('_method'))
 
 app.use(bodyParser.urlencoded())
+app.use(bodyParser.json())
 
 app.use(cookieParser())
 

@@ -3,14 +3,15 @@ import Role from "../../models/role.model";
 import { systemConfig } from "../../config/config";
 
 
+
 //[GET] /admin/roles
 export const index = async (req: Request, res: Response) => {
-  const role = await Role.find({ deleted: false });
+  const record = await Role.find({ deleted: false });
 
 
   res.render("admin/pages/role/index", {
     pageTitle: "Nhóm quyền",
-    role: role
+    record: record
   });
 };
 //[GET] /admin/roles/detail/:id
@@ -71,3 +72,31 @@ export const deleteItem = async (req: Request, res: Response) => {
     })
   }
 };
+
+
+//[GET] /admin/roles/premissions/:id
+export const premission = async (req: Request, res: Response) => {
+  const record = await Role.find({ deleted: false });
+
+
+  res.render("admin/pages/role/permissions", {
+    pageTitle: "Phân quyền",
+    record: record
+  });
+};
+//[PATCH] /admin/roles/premissions/:id
+export const permissionsPatch = async (req: Request, res: Response) => {
+
+  const premissions = req.body;
+
+  for (const item of premissions) {
+    await Role.updateOne({ _id: item.id }, { permissions: item.permissions })
+  }
+  res.redirect(req.get('Referer'));
+
+
+};
+
+
+
+//  if(role.permissions.includes('roles_premissions'))

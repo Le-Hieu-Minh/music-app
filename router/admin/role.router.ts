@@ -14,4 +14,7 @@ router.patch("/edit/:id", controller.editPatch);
 
 router.patch("/delete/:id", controller.deleteItem);
 
+router.get("/permissions", controller.premission);
+router.patch("/permissions", controller.permissionsPatch);
+
 export const RoleRoutes: Router = router;
