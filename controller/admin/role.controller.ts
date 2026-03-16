@@ -45,12 +45,11 @@ export const createPost = async (req: Request, res: Response) => {
 
 //[GET] /admin/roles/edit/:id
 export const edit = async (req: Request, res: Response) => {
-  const role = await Role.findOne({ _id: req.params.id, deleted: false });
-  console.log(role);
+  const roleCreate = await Role.findOne({ _id: req.params.id, deleted: false });
 
   res.render("admin/pages/role/edit", {
     pageTitle: "Sửa quyền",
-    role: role
+    roleCreate: roleCreate
   });
 };
 

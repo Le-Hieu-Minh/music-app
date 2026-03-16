@@ -222,3 +222,24 @@ deleteButtonRole.forEach(buttonDelete => {
 });
 
 //end delete Role
+
+//delete_song
+const deleteButtonAccount = document.querySelectorAll("[button-delete]");
+deleteButtonAccount.forEach(buttonDelete => {
+  buttonDelete.addEventListener("click", () => {
+    const idAccount = buttonDelete.getAttribute("data-id");
+    const url = `/admin/accounts/delete/${idAccount}`;
+    const option = {
+      method: "PATCH"
+    }
+    fetch(url, option)
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          const itemRow = buttonDelete.closest("tr");
+          itemRow.remove();
+
+        }
+      })
+  })
+});

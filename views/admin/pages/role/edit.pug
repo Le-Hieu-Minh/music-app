@@ -6,7 +6,7 @@ block main
     
 
     form(
-      action=`/${prefixAdmin}/roles/edit/${role.id}?_method=PATCH`
+      action=`/${prefixAdmin}/roles/edit/${roleCreate.id}?_method=PATCH`
       method="POST"
     )
       div(class="form-group")
@@ -16,7 +16,7 @@ block main
           class="form-control"
           id="title"
           name="title"
-          value=role.title
+          value=roleCreate.title
           required
         )
 
@@ -27,7 +27,7 @@ block main
           class="form-control"
           id="desc"
           name="description"
-          value=role.description
+          value=roleCreate.description
         )
       
       div(class="form-group")
