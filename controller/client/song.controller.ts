@@ -44,8 +44,9 @@ export const detail = async (req: Request, res: Response) => {
   const song = await Song.findOne({
     slug: slugSong,
     status: "active",
-    deleted: false
+
   })
+  console.log(song);
 
   const singer = await Singer.findOne({
     _id: song.singerId,

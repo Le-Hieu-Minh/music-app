@@ -3,4 +3,90 @@ include ../../mixins/box-head.pug
 
 block main
 
-  h1 trang tong quan
+  .container
+      h2.mb-4.text-uppercase.font-weight-bold Dashboard Quản Trị
+
+      //- 4 Hộp thống kê số lượng
+      .row.mb-5
+        .col-xl-3.col-md-6.mb-4
+          .card.stat-card.bg-primary.text-white.shadow
+            .card-body
+              .d-flex.justify-content-between.align-items-center
+                div
+                  .text-white-50.small.text-uppercase.font-weight-bold Ca Sĩ
+                  .h3.font-weight-bold.mb-0 #{singer}
+                .icon-shape
+                  i.fas.fa-microphone-alt.fa-2x
+        
+        .col-xl-3.col-md-6.mb-4
+          .card.stat-card.bg-success.text-white.shadow
+            .card-body
+              .d-flex.justify-content-between.align-items-center
+                div
+                  .text-white-50.small.text-uppercase.font-weight-bold Bài Hát
+                  .h3.font-weight-bold.mb-0  #{song}
+                .icon-shape
+                  i.fas.fa-music.fa-2x
+
+
+        .col-xl-3.col-md-6.mb-4
+          .card.stat-card.bg-warning.text-white.shadow
+            .card-body
+              .d-flex.justify-content-between.align-items-center
+                div
+                  .text-white-50.small.text-uppercase.font-weight-bold Chủ đề
+                  .h3.font-weight-bold.mb-0  #{topic}
+                .icon-shape
+                  i.fas.fa-play-circle.fa-2x 
+        
+
+        .col-xl-3.col-md-6.mb-4
+          .card.stat-card.bg-info.text-white.shadow
+            .card-body
+              .d-flex.justify-content-between.align-items-center
+                div
+                  .text-white-50.small.text-uppercase.font-weight-bold Người Dùng
+                  .h3.font-weight-bold.mb-0 5,800
+                .icon-shape
+                  i.fas.fa-users.fa-2x
+
+        
+
+      //- Hộp thống kê hoạt động Admin
+      .row
+        .col-12
+          .card.shadow.border-0
+            .card-header.bg-white.py-3
+              h5.m-0.font-weight-bold.text-primary Các hoạt động gần đây
+            .card-body
+              .table-responsive
+                table.table.table-hover
+                  thead.thead-light
+                    tr
+                      th Admin
+                      th Hành động
+                      th Đối tượng
+                      th Thời gian
+                      th Trạng thái
+                  tbody
+                    tr
+                      td Lê Hiếu Minh
+                      td 
+                        span.badge.badge-pill.badge-primary Thêm mới
+                      td Bài hát: "Hà Nội Mùa Vắng Những Cơn Mưa"
+                      td 10:30 - 21/03/2026
+                      td: i.fas.fa-check-circle.text-success
+                    tr
+                      td Admin_02
+                      td 
+                        span.badge.badge-pill.badge-warning Chỉnh sửa
+                      td Ca sĩ: "Sơn Tùng M-TP"
+                      td 09:15 - 21/03/2026
+                      td: i.fas.fa-check-circle.text-success
+                    tr
+                      td Quản trị viên
+                      td 
+                        span.badge.badge-pill.badge-danger Xóa
+                      td Tài khoản: "user_test_01"
+                      td 08:45 - 21/03/2026
+                      td: i.fas.fa-check-circle.text-success
