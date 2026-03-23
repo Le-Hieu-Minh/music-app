@@ -12,28 +12,33 @@ export const index = async (req: Request, res: Response) => {
 
   })
 
+  const finalFavoriteSongs = [];
 
   for (const item of favoriteSongs) {
-    console.log(item.songId);
     const infoSong = await Song.findOne({
       _id: item.songId,
-
+      deleted: false // Khi Admin xóa, điều kiện này sẽ khiến infoSong = null
     });
 
 
-    const infoSinger = await Singer.findOne({
-      _id: infoSong.singerId,
-      deleted: false
-    });
-    console.log(infoSinger);
+    if (infoSong) {
+      const infoSinger = await Singer.findOne({
+        _id: infoSong.singerId,
+        deleted: false
+      });
 
-    item["infoSong"] = infoSong;
-    item["infoSinger"] = infoSinger;
+
+      item["infoSong"] = infoSong;
+      item["infoSinger"] = infoSinger;
+
+
+      finalFavoriteSongs.push(item);
+    }
+
   }
-  // console.log(favoriteSongs);
 
   res.render("client/pages/favorite-songs/index", {
     pageTitle: "Bài hát yêu thích",
-    favoriteSongs: favoriteSongs
-  })
+    favoriteSongs: finalFavoriteSongs
+  });
 };

@@ -13,6 +13,7 @@ export const list = async (req: Request, res: Response) => {
     status: "active",
     deleted: false
   });
+
   const songs = await Song.find({
     topicId: topic.id,
     status: "active",
@@ -20,19 +21,24 @@ export const list = async (req: Request, res: Response) => {
   }).select("avatar title slug like singerId");
 
 
+  const finalSongs = [];
+
   for (const song of songs) {
     const infoSinger = await Singer.findOne({
       _id: song.singerId,
       status: "active",
       deleted: false
-    })
-    song["infoSinger"] = infoSinger;
-  }
+    });
 
+    if (infoSinger) {
+      song["infoSinger"] = infoSinger;
+      finalSongs.push(song); // Chỉ thêm vào danh sách nếu ca sĩ còn tồn tại
+    }
+  }
 
   res.render("client/pages/songs/list", {
     pageTitle: topic.title,
-    songs: songs
+    songs: finalSongs // Chỉ gửi danh sách bài hát có ca sĩ hợp lệ
   });
 };
 
@@ -44,9 +50,9 @@ export const detail = async (req: Request, res: Response) => {
   const song = await Song.findOne({
     slug: slugSong,
     status: "active",
+    deleted: false
+  });
 
-  })
-  console.log(song);
 
   const singer = await Singer.findOne({
     _id: song.singerId,
