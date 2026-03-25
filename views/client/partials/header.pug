@@ -41,3 +41,11 @@ header.header
               a(href="/topics") Chủ đề
             li
               a(href="/favorite-songs") Yêu thích
+            if(user)
+              li
+                a(href="/users/logout") Đăng xuất
+            else
+              li
+                a(href="/users/login") Đăng nhập
+              li
+                a(href="/users/register") Đăng ký

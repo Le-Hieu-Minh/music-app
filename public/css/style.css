@@ -474,11 +474,7 @@
 
 /* --- Thanh tìm kiếm và nút (Form Group) --- */
 .form-group {
-  /* Đảm bảo flexbox cho input và button đã được thiết lập bởi d-flex (Bootstrap) */
-  border: 1px solid #ccc;
-  border-radius: 50px;
-  /* Bo góc tròn cho thanh tìm kiếm */
-  overflow: hidden;
+
   /* Cắt góc nếu input/button không được bo góc */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }

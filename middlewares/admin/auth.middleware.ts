@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import Account from "../../models/account.model";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-// const Role = require('../../models/role.model')
 
 import { systemConfig } from "../../config/config";
 import Role from "../../models/role.model";
