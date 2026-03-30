@@ -41,7 +41,9 @@ header.header
               a(href="/topics") Chủ đề
             li
               a(href="/favorite-songs") Yêu thích
-            if(user)
+            if(custummer)
+              li
+                a(href="/users/info") #{custummer.fullName}
               li
                 a(href="/users/logout") Đăng xuất
             else

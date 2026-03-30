@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import md5 from "md5"
+import md5 from "md5";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import Account from "../../models/account.model";
-import { systemConfig } from "../../config/config"
+import { systemConfig } from "../../config/config";
 import Blacklist from "../../models/blacklist.model";
 dotenv.config();
 
@@ -47,10 +47,10 @@ export const loginPost = async (req: Request, res: Response) => {
     id: user.id,
     role_id: user.role_id
   }
-  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY, { expiresIn: '15m' });
+  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY, { expiresIn: '2d' });
 
   const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_KEY, { expiresIn: '30d' });
-  res.cookie('token', accessToken, { httpOnly: true });
+  res.cookie('token', accessToken, { httpOnly: true, path: '/admin/' });
   res.cookie('refreshToken', refreshToken, { httpOnly: true, path: '/admin/auth/refresh-token' });
 
   res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
@@ -86,9 +86,9 @@ export const refreshToken = async (req: Request, res: Response) => {
     const newAccessToken = jwt.sign(
       { id: decode.id, role_id: decode.role_id },
       process.env.JWT_ACCESS_KEY,
-      { expiresIn: '15m' } // Chỉ cho phép sống 15 phút
+      { expiresIn: '2d' } // Chỉ cho phép sống 15 phút
     );
-    res.cookie('token', newAccessToken, { httpOnly: true });
+    res.cookie('token', newAccessToken, { httpOnly: true, path: '/admin/' });
 
     res.redirect(req.get('Referer') || `/${systemConfig.prefixAdmin}/dashboard`);
   } catch (error) {

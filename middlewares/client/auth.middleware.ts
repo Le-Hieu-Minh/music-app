@@ -12,11 +12,11 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
   const refreshTokenUs = req.cookies.refreshTokenUs;
 
   if (!tokenUs) {
-    return res.redirect(`/users/login`);
+    return res.redirect(`/`);
   }
   const isBlackListed = await Blacklist.findOne({ token: tokenUs });
   if (isBlackListed) {
-    return res.redirect(`/users/login`);
+    return res.redirect(`/`);
   }
   try {
     const decode = jwt.verify(tokenUs, process.env.JWT_ACCESS_KEY);
