@@ -21,10 +21,10 @@ block main
                             i(class="fa-solid fa-headphones")
                             span #{song.listen} lượt nghe
 
-                        div(class="inner-action inner-like" button-like=song.id)
+                        div(class=(`inner-action inner-like ${song.isLiked} ` +(song.isLiked?"active":"")) button-like=song.id idUser=custummer.id)
                             i(class="fa-regular fa-thumbs-up")
-                            span #{song.like} thích
-                        div(class=("inner-action inner-heart "+(song.favoriteSong?"active":"")) button-favorite=song.id)
+                            span #{song.like.length} thích
+                        div(class=("inner-action inner-heart "+(song.favoriteSong?"active":"")) button-favorite=song.id idUser=custummer.id)
                             i(class="fa-regular fa-heart")
                             | Bài hát yêu thích
                     

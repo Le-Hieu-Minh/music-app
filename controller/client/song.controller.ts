@@ -3,6 +3,7 @@ import Topic from "../../models/topic.model";
 import Song from "../../models/song.model";
 import Singer from "../../models/singer.model";
 import FavoriteSong from "../../models/favorite-song.model";
+import User from "../../models/user.model";
 
 
 //[GET] /songs/:slugTopic
@@ -47,6 +48,7 @@ export const detail = async (req: Request, res: Response) => {
 
   const slugSong: string = req.params.slugSong;
 
+  const custummer = res.locals.custummer;
   const song = await Song.findOne({
     slug: slugSong,
     status: "active",
@@ -65,10 +67,20 @@ export const detail = async (req: Request, res: Response) => {
   }).select("title");
 
   const favoriteSong = await FavoriteSong.findOne({
-    songId: song.id
+    songId: song.id,
+    userId: custummer.id
   });
 
+
+  if (custummer) {
+    let isLiked = false;
+    isLiked = song.like.includes(custummer.id);
+    song["isLiked"] = isLiked;
+  }
+
   song["favoriteSong"] = favoriteSong ? true : false;
+
+
 
 
   res.render("client/pages/songs/detail", {
@@ -79,28 +91,37 @@ export const detail = async (req: Request, res: Response) => {
   });
 };
 
-//[PATCH] /like/:typeLike/:idSong
+//[PATCH] /like/:typeLike/:idSong/:userId
 export const like = async (req: Request, res: Response) => {
 
   const idSong: string = req.params.idSong;
   const typeLike: string = req.params.typeLike;
+  const userId: string = req.params.userId;
 
   const song = await Song.findOne({
     _id: idSong,
     deleted: false,
     status: "active"
   });
-  const newLike: number = typeLike == "like" ? song.like + 1 : song.like - 1;
+  let currentLikes = song.like;
+  if (typeLike === "like") {
+    if (!currentLikes.includes(userId)) {
+      currentLikes.push(userId);
+    }
+  } else if (typeLike === "dislike") {
+    currentLikes = currentLikes.filter(item => item !== userId);
+  }
+
   await Song.updateOne({
     _id: idSong
   }, {
-    like: newLike
-  })
+    like: currentLikes
+  });
   res.json({
     code: 200,
     message: "Thành công",
-    like: newLike
-  })
+    like: currentLikes.length
+  });
 
 };
 //[PATCH] /favorite/:typeFavorite/:idSong
@@ -108,6 +129,7 @@ export const favorite = async (req: Request, res: Response) => {
 
   const idSong: string = req.params.idSong;
   const typeFavorite: string = req.params.typeFavorite;
+  const userId: string = req.params.userId;
 
   switch (typeFavorite) {
     case "favorite":
@@ -116,7 +138,7 @@ export const favorite = async (req: Request, res: Response) => {
       });
       if (!existFavorite) {
         const record = new FavoriteSong({
-          // userId:"",
+          userId: userId,
           songId: idSong
         });
         await record.save();
@@ -124,6 +146,7 @@ export const favorite = async (req: Request, res: Response) => {
       break;
     case "unfavorite":
       await FavoriteSong.deleteOne({
+        userId: userId,
         songId: idSong
       });
       break;
@@ -135,7 +158,7 @@ export const favorite = async (req: Request, res: Response) => {
   res.json({
     code: 200,
     message: "Thành công",
-  })
+  });
 
 };
 
