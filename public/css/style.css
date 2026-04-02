@@ -587,3 +587,37 @@
 }
 
 /*End Box Search)*/
+
+/* home */
+/* Hiệu ứng cho thẻ thể loại */
+.inner-topic-card {
+  transition: transform 0.3s ease;
+  background: #f8f9fa;
+}
+
+.inner-topic-card:hover {
+  transform: translateY(-5px);
+  background: #e9ecef;
+}
+
+/* Hiệu ứng cho ảnh nghệ sĩ */
+.inner-avatar img {
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.inner-avatar img:hover {
+  border-color: #007bff;
+  transform: scale(1.05);
+}
+
+/* Hiệu ứng cho bài hát */
+.song-item {
+  transition: background 0.2s;
+}
+
+.song-item:hover {
+  background: #f1f3f5 !important;
+}
+
+/* end home */

@@ -68,7 +68,7 @@ export const detail = async (req: Request, res: Response) => {
 
   const favoriteSong = await FavoriteSong.findOne({
     songId: song.id,
-    userId: custummer.id
+    userId: custummer.id //lam the noa xu ly dc cai id nay lay dau ra
   });
 
 
@@ -124,6 +124,7 @@ export const like = async (req: Request, res: Response) => {
   });
 
 };
+
 //[PATCH] /favorite/:typeFavorite/:idSong
 export const favorite = async (req: Request, res: Response) => {
 
