@@ -16,6 +16,8 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",
     "md5": "^2.3.0",
     "method-override": "^3.0.0",
@@ -28,7 +30,13 @@
     "unidecode": "^1.1.0"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
+    "@types/express-flash": "^0.0.5",
+    "@types/express-session": "^1.18.2",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/md5": "^2.3.6",
+    "@types/method-override": "^3.0.0",
     "@types/node": "^24.10.1",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",

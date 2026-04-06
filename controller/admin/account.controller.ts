@@ -12,7 +12,7 @@ export const index = async (req: Request, res: Response) => {
   for (const item of record) {
     const role = await Role.findOne({ _id: item.role_id, deleted: false });
 
-    item['role'] = role;
+    (item as any)['role'] = role;
   }
 
   res.render("admin/pages/accounts/index", {
@@ -33,13 +33,20 @@ export const create = async (req: Request, res: Response) => {
 
 //[POST] /admin/accounts/create
 export const createPost = async (req: Request, res: Response) => {
-  const existEmail = await Account.findOne({ email: req.body.email, deleted: false });
-  if (existEmail) {
-    res.redirect(req.get('Referer'));
-  } else {
-    req.body.password = md5(req.body.password);
-    const newAccount = new Account(req.body);
-    await newAccount.save();
+  try {
+    const existEmail = await Account.findOne({ email: req.body.email, deleted: false });
+    if (existEmail) {
+      req.flash("error", "Email đã tồn tại vui lòng chọn email khác");
+      res.redirect(req.get('Referer') || `/${systemConfig.prefixAdmin}/accounts`);
+    } else {
+      req.body.password = md5(req.body.password);
+      const newAccount = new Account(req.body);
+      await newAccount.save();
+      req.flash("success", "Tạo mới thành công");
+      res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
+    }
+  } catch (error) {
+    req.flash("error", "Tạo mới thất bại");
     res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
   }
 }
@@ -58,49 +65,66 @@ export const edit = async (req: Request, res: Response) => {
 
 //[POST] /admin/accounts/edit/:id
 export const editPatch = async (req: Request, res: Response) => {
-  const existEmail = await Account.findOne({
-    _id: { $ne: req.params.id },
-    email: req.body.email,
-    deleted: false
-  });
+  try {
+    const existEmail = await Account.findOne({
+      _id: { $ne: req.params.id },
+      email: req.body.email,
+      deleted: false
+    });
 
-  if (existEmail) {
-    res.redirect(req.get('Referer'));
-  } else {
-    if (req.body.password) {
-      req.body.password = md5(req.body.password);
+    if (existEmail) {
+      req.flash("error", "Email đã tồn tại vui lòng chọn email khác");
+      res.redirect(req.get('Referer') || `/${systemConfig.prefixAdmin}/accounts`);
     } else {
-      delete req.body.password;
+      if (req.body.password) {
+        req.body.password = md5(req.body.password);
+      } else {
+        delete req.body.password;
+      }
+      req.flash("success", "Sửa thành công");
+      await Account.updateOne({ _id: req.params.id }, req.body);
+
     }
-    await Account.updateOne({ _id: req.params.id }, req.body);
 
+    res.redirect(req.get('Referer') || `/${systemConfig.prefixAdmin}/accounts`);
+  } catch (error) {
+    req.flash("error", "Sửa thất bại");
+    res.redirect(req.get('Referer') || `/${systemConfig.prefixAdmin}/accounts`);
   }
-
-  res.redirect(req.get('Referer'))
 }
 
 //[GET] /admin/accounts/detail/:id
 export const detail = async (req: Request, res: Response) => {
   const detailAccount = await Account.findOne({ _id: req.params.id, deleted: false });
-  const roleDetail = await Role.findOne({ _id: detailAccount.role_id, deleted: false }).select("title");
-  res.render("admin/pages/accounts/detail", {
-    pageTitle: "Trang sửa tài khoản",
-    detailAccount: detailAccount,
-    roleDetail: roleDetail
-  });
+  if (detailAccount) {
+    const roleDetail = await Role.findOne({ _id: detailAccount.role_id, deleted: false }).select("title");
+    res.render("admin/pages/accounts/detail", {
+      pageTitle: "Trang sửa tài khoản",
+      detailAccount: detailAccount,
+      roleDetail: roleDetail
+    });
+  } else {
+    res.redirect('back');
+  }
+
 }
 
 //[DELETE] /admin/account/delete/:id
 export const deleteItem = async (req: Request, res: Response) => {
-  const id = req.params.id;
-
-  const account = await Account.updateOne({ _id: id }, {
-    deleted: true
-  });
-  if (account) {
-    res.json({
-      code: 200,
-      message: "Xóa thành công",
-    })
+  try {
+    const id: string = req.params.id;
+    const account = await Account.updateOne({ _id: id }, {
+      deleted: true
+    });
+    if (account) {
+      req.flash("success", "Xóa thành công");
+      res.json({
+        code: 200,
+        message: "Xóa thành công",
+      })
+    }
+  } catch (error) {
+    req.flash("error", "Xóa thất bại");
+    res.redirect(req.get('Referer') || `/${systemConfig.prefixAdmin}/accounts`);
   }
 }

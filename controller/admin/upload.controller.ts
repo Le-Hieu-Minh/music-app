@@ -1,4 +1,4 @@
-import { log } from "console";
+
 import { Request, Response } from "express";
 
 //[GET] /admin/upload

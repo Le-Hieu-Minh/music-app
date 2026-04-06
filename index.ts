@@ -7,6 +7,8 @@ import path from "path";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
 import cookieParser from "cookie-parser"
+import flash from "express-flash";
+import session from 'express-session';
 
 import clientRoutes from "./router/client/index.router";
 import adminRoutes from "./router/admin/index.router";
@@ -24,13 +26,25 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 app.set("views", "./views");
 app.set("view engine", "pug");
 
+//method-override
 app.use(methodOverride('_method'))
 
+//body-parser
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
+//cookie-parser
 app.use(cookieParser())
 
+//express-flash
+app.use(cookieParser('QWERTYUIOPASDFGHJ'));
+app.use(session({
+  secret: 'Le_MINH_HIEU',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }
+}));
+app.use(flash());
 
 app.use(express.static(`public`));
 

@@ -70,7 +70,7 @@ export const refreshToken = async (req: Request, res: Response) => {
     res.redirect(`/users/login`);
   } else {
     try {
-      const decode = jwt.verify(refreshTokenUs, process.env.JWT_REFRESH_KEY)
+      const decode: any = jwt.verify(refreshTokenUs, process.env.JWT_REFRESH_KEY)
       const newAccessTokenUs = jwt.sign({ id: decode.id }, process.env.JWT_ACCESS_KEY, { expiresIn: '2d' });
       res.cookie('tokenUs', newAccessTokenUs, { httpOnly: true });
       res.redirect(req.get(`Referer`) || `/topics`);
@@ -87,7 +87,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
   const tokenUs = req.cookies.tokenUs;
   if (tokenUs) {
-    const decode = jwt.decode(tokenUs);
+    const decode: any = jwt.decode(tokenUs);
     await Blacklist.create({
       token: tokenUs,
       expireAt: new Date(decode.exp * 1000)
@@ -212,7 +212,7 @@ export const resetPost = async (req: Request, res: Response) => {
   const tokenResetPW = req.cookies.tokenResetPW;
 
   if (password === confirmPassword) {
-    const decode = jwt.decode(tokenResetPW);
+    const decode: any = jwt.decode(tokenResetPW);
     await User.updateOne({
       _id: decode.id
     }, {

@@ -27,15 +27,18 @@ export const loginPost = async (req: Request, res: Response) => {
 
 
   if (!user) {
-    return res.redirect(req.get('Referer'));
+    req.flash("error", "Sai email");
+    return res.redirect("back");
   }
 
   if (md5(password) !== user.password) {
-    return res.redirect(req.get('Referer'));
+    req.flash("error", "Sai mật khẩu");
+    return res.redirect("back");
   }
 
   if (user.status === 'inactive') {
-    return res.redirect(req.get('Referer'));
+    req.flash('error', 'Tài khoản đã bị khóa');
+    return res.redirect("back");
   }
 
   // Access Token: Dùng để xác thực các request (hết hạn nhanh, ví dụ: 15 phút).
@@ -47,9 +50,9 @@ export const loginPost = async (req: Request, res: Response) => {
     id: user.id,
     role_id: user.role_id
   }
-  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY, { expiresIn: '2d' });
+  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY!, { expiresIn: '2d' });
 
-  const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_KEY, { expiresIn: '30d' });
+  const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_KEY!, { expiresIn: '30d' });
   res.cookie('token', accessToken, { httpOnly: true, path: '/admin/' });
   res.cookie('refreshToken', refreshToken, { httpOnly: true, path: '/admin/auth/refresh-token' });
 
@@ -58,17 +61,14 @@ export const loginPost = async (req: Request, res: Response) => {
 
 //[GET] /admin/auth/login
 export const logout = async (req: Request, res: Response) => {
-  const token = req.cookies.token;
+  const token: string = req.cookies.token;
+  const decode = jwt.decode(token);
 
-  if (token) {
-    const decode = jwt.decode(token);
-
+  if (decode && typeof decode !== "string") {
     await Blacklist.create({
       token: token,
-      expireAt: new Date(decode.exp * 1000)
-    })
-
-
+      expireAt: new Date(decode.exp! * 1000)
+    });
   }
   res.clearCookie("token");
   res.clearCookie("refreshToken");
@@ -82,15 +82,19 @@ export const refreshToken = async (req: Request, res: Response) => {
     res.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
   }
   try {
-    const decode = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
-    const newAccessToken = jwt.sign(
-      { id: decode.id, role_id: decode.role_id },
-      process.env.JWT_ACCESS_KEY,
-      { expiresIn: '2d' } // Chỉ cho phép sống 15 phút
-    );
-    res.cookie('token', newAccessToken, { httpOnly: true, path: '/admin/' });
 
-    res.redirect(req.get('Referer') || `/${systemConfig.prefixAdmin}/dashboard`);
+    const decode = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY!);
+    if (decode && typeof decode !== "string") {
+      const newAccessToken = jwt.sign(
+        { id: decode.id!, role_id: decode.role_id! },
+        process.env.JWT_ACCESS_KEY!,
+        { expiresIn: '2d' } // Chỉ cho phép sống 15 phút
+      );
+      res.cookie('token', newAccessToken, { httpOnly: true, path: '/admin/' });
+
+      res.redirect(req.get('Referer') || `/${systemConfig.prefixAdmin}/dashboard`);
+    }
+
   } catch (error) {
     // Refresh Token hết hạn hoặc fake -> Bắt đăng nhập lại
     res.clearCookie("token");

@@ -19,7 +19,7 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
     return res.redirect(`/`);
   }
   try {
-    const decode = jwt.verify(tokenUs, process.env.JWT_ACCESS_KEY);
+    const decode: any = jwt.verify(tokenUs, process.env.JWT_ACCESS_KEY);
     const user = await User.findOne({ _id: decode.id }).select('-password');
     if (!user) {
       return res.redirect(`/users/login`);
