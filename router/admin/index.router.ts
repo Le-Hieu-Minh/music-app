@@ -10,8 +10,8 @@ import { authRoutes } from "./auth.router";
 import { RoleRoutes } from "./role.router";
 import { accountRoutes } from "./account.router";
 import { settingRoutes } from "./setting.router";
+import { userRoutes } from "./user.router";
 import * as authMiddleware from "../../middlewares/admin/auth.middleware";
-
 
 const adminRoutes = (app: Express): void => {
   const PATH_ADMIN = `/${systemConfig.prefixAdmin}`;
@@ -23,9 +23,8 @@ const adminRoutes = (app: Express): void => {
   app.use(`${PATH_ADMIN}/roles`, authMiddleware.requireAuth, RoleRoutes);
   app.use(`${PATH_ADMIN}/accounts`, authMiddleware.requireAuth, accountRoutes);
   app.use(`${PATH_ADMIN}/settings`, authMiddleware.requireAuth, settingRoutes);
-
-  app.use(`${PATH_ADMIN}/upload`, uploadRoutes);
-
+  app.use(`${PATH_ADMIN}/users`, authMiddleware.requireAuth, userRoutes);
+  app.use(`${PATH_ADMIN}/upload`, authMiddleware.requireAuth, uploadRoutes);
   app.use(`${PATH_ADMIN}/auth`, authRoutes);
 };
 

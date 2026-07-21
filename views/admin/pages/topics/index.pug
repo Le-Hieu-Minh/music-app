@@ -40,6 +40,7 @@ block main
                           button-status
                           data-status=item.status
                           data-id=item.id
+                          data-path=`/${prefixAdmin}/topics/changeStatus`
                         ) Hoạt động
                       else
                         a(
@@ -48,6 +49,7 @@ block main
                           button-status
                           data-status=item.status
                           data-id=item.id
+                          data-path=`/${prefixAdmin}/topics/changeStatus`
                         ) Dừng hoạt động
                     td
                       if(role.permissions.includes('music-category_view'))
@@ -65,6 +67,8 @@ block main
                           class="btn btn-danger btn-sm ml-1"
                           button-delete
                           data-id=item.id
+                          data-path=`/${prefixAdmin}/topics/delete`
+                          data-method="DELETE"
                         ) Xóa
   else
     h1 Bạn ko có quyền xem danh sách chủ đề

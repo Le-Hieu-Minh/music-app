@@ -1,0 +1,35 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+    .row
+      .col-12
+        +box-head(pageTitle)
+        if playlist.description
+          p.text-muted #{playlist.description}
+        a.btn.btn-sm.btn-outline-secondary.mb-3(href="/playlists") ← Danh sách playlist
+
+    .row
+      each song in songs
+        .col-12.col-md-6.mb-3
+          .song-item
+            .inner-image
+              a(href=`/songs/detail/${song.slug}`)
+                img(src=song.avatar || "/image/spotify_logo.jpg")
+            .inner-content
+              .inner-title1
+                a(href=`/songs/detail/${song.slug}`) #{song.title}
+              .inner-singer
+                i.fa-solid.fa-microphone-lines
+                | #{song.infoSinger ? song.infoSinger.fullName : "Đang cập nhật"}
+              .inner-like
+                button.btn.btn-sm.btn-outline-danger(
+                  type="button"
+                  button-remove-playlist-song
+                  data-playlist-id=playlist.id
+                  data-song-id=song._id
+                ) Gỡ
+      else
+        .col-12
+          .empty-state Playlist chưa có bài hát. Vào trang bài hát để thêm.

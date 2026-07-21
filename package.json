@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --noEmit"
   },
   "author": "",
   "license": "ISC",
@@ -22,9 +24,9 @@
     "md5": "^2.3.0",
     "method-override": "^3.0.0",
     "mongoose": "^9.0.0",
-    "mongoose-slug-updater": "^3.3.0",
     "multer": "^2.0.2",
     "pug": "^3.0.3",
+    "slugify": "^1.6.9",
     "streamifier": "^0.1.1",
     "tinymce": "^8.3.0",
     "unidecode": "^1.1.0"
@@ -34,11 +36,17 @@
     "@types/express": "^5.0.6",
     "@types/express-flash": "^0.0.5",
     "@types/express-session": "^1.18.2",
+    "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/md5": "^2.3.6",
     "@types/method-override": "^3.0.0",
-    "@types/node": "^24.10.1",
+    "@types/multer": "^2.1.0",
+    "@types/node": "^24.12.2",
+    "@types/streamifier": "^0.1.2",
+    "@types/unidecode": "^1.1.0",
+    "jest": "^30.4.2",
     "nodemon": "^3.1.11",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }

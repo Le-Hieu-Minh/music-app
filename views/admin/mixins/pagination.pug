@@ -1,0 +1,15 @@
+mixin pagination(pagination, baseUrl)
+  if pagination && pagination.totalPage > 1
+    nav.mt-3
+      ul.pagination.justify-content-center.mb-0
+        - const page = pagination.page
+        - const totalPage = pagination.totalPage
+        - const sep = baseUrl.includes("?") ? "&" : "?"
+        li.page-item(class=page <= 1 ? "disabled" : "")
+          a.page-link(href=page <= 1 ? "#" : `${baseUrl}${sep}page=${page - 1}`) Trước
+        - for (let i = 1; i <= totalPage; i++)
+          if i === 1 || i === totalPage || (i >= page - 2 && i <= page + 2)
+            li.page-item(class=i === page ? "active" : "")
+              a.page-link(href=`${baseUrl}${sep}page=${i}`) #{i}
+        li.page-item(class=page >= totalPage ? "disabled" : "")
+          a.page-link(href=page >= totalPage ? "#" : `${baseUrl}${sep}page=${page + 1}`) Sau

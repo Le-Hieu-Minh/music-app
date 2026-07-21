@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+    .row.align-items-center.mb-3
+      .col
+        +box-head(pageTitle)
+      .col-auto
+        a.btn.btn-primary(href="/playlists/create") + Tạo playlist
+
+    if messages && messages.success
+      .alert.alert-success #{messages.success}
+    if messages && messages.error
+      .alert.alert-danger #{messages.error}
+
+    .row
+      each playlist in playlists
+        .col-12.col-md-6.col-lg-4.mb-3
+          .card.border-0.shadow-sm.h-100
+            .card-body
+              h5.card-title
+                a(href=`/playlists/${playlist.slug}`) #{playlist.title}
+              p.card-text.text-muted.small #{playlist.songs ? playlist.songs.length : 0} bài hát
+              if playlist.description
+                p.card-text #{playlist.description}
+              button.btn.btn-sm.btn-outline-danger(
+                type="button"
+                button-delete-playlist
+                data-id=playlist.id
+              ) Xóa
+      else
+        .col-12
+          .empty-state
+            p.mb-2 Bạn chưa có playlist nào.
+            a.btn.btn-primary(href="/playlists/create") Tạo playlist đầu tiên

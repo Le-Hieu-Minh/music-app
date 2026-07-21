@@ -1,46 +1,23 @@
 extends ../../layouts/auth.pug
 
 block main
-  .container.my-5
+  .container
     .row.justify-content-center
-      .col-8
+      .col-md-7.col-lg-5
         h1(class="text-center") Đăng ký tài khoản
-        form(
-          action="/users/register"
-          method="POST"
-        )
-          div(class="form-group")
+        if messages && messages.error
+          .alert.alert-danger #{messages.error}
+        form(action="/users/register" method="POST")
+          .form-group
             label(for="fullName") Họ và tên
-            input(
-                type="text"
-                class="form-control"
-                id="fullName"
-                name="fullName"
-                required
-            )
-
-          div(class="form-group")
+            input#fullName.form-control(type="text" name="fullName" required)
+          .form-group
             label(for="email") Email
-            input(
-                type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                required
-            )
-            
-          div(class="form-group")
+            input#email.form-control(type="email" name="email" required)
+          .form-group
             label(for="password") Mật khẩu
-            input(
-                type="password"
-                class="form-control"
-                id="password"
-                name="password"
-                required
-            )
-              
-          div(class="form-group")
-            button(
-                type="submit"
-                class="btn btn-primary btn-block"
-            ) Đăng ký
+            input#password.form-control(type="password" name="password" required)
+          .form-group.mb-2
+            button.btn.btn-primary.btn-block(type="submit") Đăng ký
+        .text-center.mt-3
+          a(href="/users/login") Đã có tài khoản? Đăng nhập

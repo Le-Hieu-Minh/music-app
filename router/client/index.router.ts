@@ -4,8 +4,11 @@ import { songRoutes } from "./song.router";
 import { favoriteSongRoutes } from "./favorite-song.router";
 import { searchRoutes } from "./search.router";
 import { userRoutes } from "./user.router";
-import { homeRoutes } from './home.router';
-import * as  settingMiddleware from "../../middlewares/client/setting.middleware";
+import { homeRoutes } from "./home.router";
+import { singerRoutes } from "./singer.router";
+import { playlistRoutes } from "./playlist.router";
+import { chartRoutes } from "./chart.router";
+import * as settingMiddleware from "../../middlewares/client/setting.middleware";
 import * as authMiddleware from "../../middlewares/client/auth.middleware";
 import * as userInfoMiddleware from "../../middlewares/client/user.middleware";
 
@@ -15,6 +18,9 @@ const clientRoutes = (app: Express): void => {
 
   app.use(`/topics`, topicRoutes);
   app.use(`/songs`, songRoutes);
+  app.use(`/singers`, singerRoutes);
+  app.use(`/charts`, chartRoutes);
+  app.use(`/playlists`, authMiddleware.requireAuth, playlistRoutes);
   app.use(`/favorite-songs`, authMiddleware.requireAuth, favoriteSongRoutes);
   app.use(`/search`, searchRoutes);
   app.use(`/users`, userRoutes);

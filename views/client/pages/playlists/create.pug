@@ -1,0 +1,21 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-5
+    .row.justify-content-center
+      .col-md-8.col-lg-6
+        +box-head(pageTitle)
+        if messages && messages.error
+          .alert.alert-danger #{messages.error}
+        .card.border-0.shadow-sm
+          .card-body
+            form(action="/playlists/create" method="POST")
+              .form-group
+                label(for="title") Tên playlist
+                input#title.form-control(type="text" name="title" required)
+              .form-group
+                label(for="description") Mô tả
+                textarea#description.form-control(name="description" rows="3")
+              button.btn.btn-primary(type="submit") Tạo
+              a.btn.btn-link(href="/playlists") Quay lại

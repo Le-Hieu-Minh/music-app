@@ -1,0 +1,23 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+    .row
+      .col-12
+        +box-head(pageTitle)
+
+    .row
+      each singer in singers
+        .col-6.col-md-4.col-lg-3.mb-4
+          .text-center
+            a(href=`/singers/${singer.slug}` class="singer-avatar d-inline-block")
+              img(
+                src=singer.avatar || "/image/spotify_logo.jpg"
+                alt=singer.fullName
+              )
+            h5.mt-2
+              a(href=`/singers/${singer.slug}` class="text-dark") #{singer.fullName}
+      else
+        .col-12
+          .empty-state Chưa có ca sĩ nào.

@@ -2,48 +2,91 @@ extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 
 block main
-    .singer-detail
-        .container.my-3
-            .row
-                .col-12
-                    .inner-title2 #{song.title}
-                    .inner-actions
-                        div(class="inner-action inner-time")
-                            i(class="fa-regular fa-clock")
-                            | #{song.createdAt}
-                        div(class="inner-action inner-singer")
-                            i(class="fa-solid fa-microphone-lines")
-                            | #{singer.fullName}
-                        div(class="inner-action inner-topic")
-                            i(class="fa-solid fa-music")
-                            | #{topic.title}
-                        div(class="inner-action inner-listen")
-                            i(class="fa-solid fa-headphones")
-                            span #{song.listen} lượt nghe
-                        if(custummer)
-                            div(class=(`inner-action inner-like ${song.isLiked} ` +(song.isLiked?"active":"")) button-like=song.id idUser=custummer.id)
-                                i(class="fa-regular fa-thumbs-up")
-                                span #{song.like.length} thích
-                            div(class=("inner-action inner-heart "+(song.favoriteSong?"active":"")) button-favorite=song.id idUser=custummer.id)
-                                i(class="fa-regular fa-heart")
-                                | Bài hát yêu thích
-                    
-                    .inner-play
-                      .inner-avatar
-                          img(src=song.avatar)
-                      .inner-audio
+  .singer-detail
+    .container.my-3
+      .row
+        .col-12
+          .inner-title2 #{song.title}
+          .inner-actions
+            if song.createdAtText
+              .inner-action.inner-time
+                i(class="fa-regular fa-clock")
+                | #{song.createdAtText}
+            if singer
+              .inner-action.inner-singer
+                i(class="fa-solid fa-microphone-lines")
+                a(href=`/singers/${singer.slug}`) #{singer.fullName}
+            if topic
+              .inner-action.inner-topic
+                i(class="fa-solid fa-music")
+                a(href=`/songs/${topic.slug}`) #{topic.title}
+            .inner-action.inner-listen
+              i(class="fa-solid fa-headphones")
+              span #{song.listen || 0} lượt nghe
+            if custummer
+              div(
+                class=`inner-action inner-like ${song.isLiked ? "active" : ""}`
+                button-like=song.id
+              )
+                i(class="fa-regular fa-thumbs-up")
+                span #{song.like ? song.like.length : 0} thích
+              div(
+                class=`inner-action inner-heart ${song.favoriteSong ? "active" : ""}`
+                button-favorite=song.id
+              )
+                i(class="fa-regular fa-heart")
+                | Yêu thích
 
-                          div(id="aplayer" data-singer=singer data-song=song)
+          .player-nav.mb-3
+            if prevSong
+              a.btn.btn-outline-secondary.btn-sm.mr-2(href=`/songs/detail/${prevSong.slug}`)
+                i.fa-solid.fa-backward
+                |  Bài trước
+            if nextSong
+              a.btn.btn-outline-secondary.btn-sm(href=`/songs/detail/${nextSong.slug}`)
+                | Bài sau 
+                i.fa-solid.fa-forward
 
-                         
-                              
-                           
+          if custummer
+            .add-playlist.mb-3
+              form.form-inline(action="#" id="form-add-playlist")
+                input(type="hidden" name="songId" value=song.id)
+                select.form-control.form-control-sm.mr-2(
+                  name="playlistId"
+                  id="playlist-select"
+                  required
+                )
+                  option(value="") Thêm vào playlist...
+                  each pl in playlists
+                    option(value=pl._id) #{pl.title}
+                button.btn.btn-sm.btn-primary(type="submit") Thêm
+                a.btn.btn-sm.btn-link(href="/playlists/create") Tạo mới
 
-                      .inner-desc
-                          .inner-label Mô tả
-                          .inner-text
-                              | !{song.description}
-                      .inner-desc
-                          .inner-label Lời bài hát
-                          .inner-text
-                              | !{song.lyrics}
+          .inner-play
+            .inner-avatar
+              img(src=song.avatar || "/image/spotify_logo.jpg" alt=song.title)
+            .inner-audio
+              div(
+                id="aplayer"
+                data-singer=singer || { fullName: "Unknown" }
+                data-song=song
+                data-queue=queue || []
+              )
+            if song.description
+              .inner-desc
+                .inner-label Mô tả
+                .inner-text !{song.description}
+            if song.lyrics
+              .inner-desc
+                .inner-label Lời bài hát
+                .inner-text !{song.lyrics}
+
+          if queue && queue.length
+            .related-queue.mt-4
+              h5 Danh sách phát tiếp theo
+              .row
+                each item in queue
+                  .col-12.col-md-6.mb-2
+                    a.text-dark(href=`/songs/detail/${item.slug}`)
+                      | #{item.title}
+                      span.text-muted.small  — #{item.singerName}

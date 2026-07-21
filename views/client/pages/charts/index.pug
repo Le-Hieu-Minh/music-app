@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/pagination.pug
+
+block main
+  .container.my-3
+    .row.align-items-center.mb-3
+      .col
+        +box-head(pageTitle)
+      .col-auto
+        .btn-group
+          a.btn.btn-sm(
+            class=type === "listen" ? "btn-primary" : "btn-outline-primary"
+            href="/charts?type=listen"
+          ) Lượt nghe
+          a.btn.btn-sm(
+            class=type === "like" ? "btn-primary" : "btn-outline-primary"
+            href="/charts?type=like"
+          ) Yêu thích
+
+    .row
+      each song, index in songs
+        .col-12.mb-2
+          .song-item
+            .inner-image
+              a(href=`/songs/detail/${song.slug}`)
+                img(src=song.avatar || "/image/spotify_logo.jpg")
+            .inner-content
+              .inner-title1
+                span.badge.badge-secondary.mr-2 ##{(pagination.page - 1) * pagination.limit + index + 1}
+                a(href=`/songs/detail/${song.slug}`) #{song.title}
+              .inner-singer
+                i.fa-solid.fa-microphone-lines
+                | #{song.infoSinger ? song.infoSinger.fullName : "Đang cập nhật"}
+              .inner-like
+                if type === "like"
+                  i.fa-solid.fa-thumbs-up
+                  | #{song.likeCount || 0}
+                else
+                  i.fa-solid.fa-headphones
+                  | #{song.listen || 0}
+      else
+        .col-12
+          .empty-state Chưa có dữ liệu bảng xếp hạng.
+
+    +pagination(pagination, `/charts?type=${type}`)

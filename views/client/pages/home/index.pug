@@ -3,7 +3,6 @@ include ../../mixins/box-head.pug
 
 block main
   .container.my-5
-    //- 1. Phân loại theo thể loại (Topic/Category)
     .section-topics.mb-5
       +box-head("Thể loại âm nhạc")
       .row
@@ -11,45 +10,74 @@ block main
           .col-6.col-md-3.col-lg-2.mb-3
             a(href=`/songs/${topic.slug}` class="text-decoration-none")
               .card.inner-topic-card.text-center.border-0.shadow-sm
-               
+                img.card-img-top(
+                  src=topic.avatar || "/image/spotify_logo.jpg"
+                  alt=topic.title
+                )
                 .card-body.p-2
-                  h6.card-title.text-dark #{topic.title}
+                  h6.card-title.text-dark.mb-0 #{topic.title}
+      .text-right.mt-2
+        a(href="/topics") Xem tất cả chủ đề →
 
-    //- 2. Nghệ sĩ phổ biến (Popular Singers)
     .section-singers.mb-5
       +box-head("Nghệ sĩ phổ biến")
       .row
         each singer in singers
           .col-6.col-md-4.col-lg-2.mb-4
-            .inner-singer-item.text-center( style="flex-direction: column;display: flex; align-items: center;")
-
-              a(href=`/singers/${singer.slug}`)
-                .inner-avatar.mb-2
-                  img(src=singer.avatar, alt=singer.fullName, class="rounded-circle shadow-sm" style="width: 120px; height: 120px; object-fit: cover;")
+            .text-center
+              a(href=`/singers/${singer.slug}` class="singer-avatar d-inline-block")
+                img(
+                  src=singer.avatar || "/image/spotify_logo.jpg"
+                  alt=singer.fullName
+                )
               a(href=`/singers/${singer.slug}` class="text-decoration-none")
-                h6.inner-name.text-dark.mt-2 #{singer.fullName}
+                h6.text-dark.mt-2.mb-0 #{singer.fullName}
+      .text-right.mt-2
+        a(href="/singers") Xem tất cả ca sĩ →
 
-    //- 3. Bài hát theo nghệ sĩ / Bài hát mới (Songs)
     .section-songs.mb-5
       +box-head("Bài hát nổi bật")
       .row
         each song in songs
           .col-12.col-md-6.col-lg-4.mb-3
-            .song-item.p-2.border.rounded.shadow-sm.bg-white
-              .d-flex.align-items-center
-                .inner-image.mr-3(style="width: 80px; height: 80px;")
-                  a(href=`/songs/detail/${song.slug}`)
-                    img(src=song.avatar, alt=song.title, class="rounded w-100 h-100" style="object-fit: cover;")
-                .inner-info.flex-grow-1
-                  h6.inner-title.mb-1
-                    a(href=`/songs/detail/${song.slug}` class="text-dark font-weight-bold") #{song.title}
-                  p.inner-singer.small.text-muted.mb-1
-                    i.fa-solid.fa-microphone-lines.mr-1
-                    | #{song.infoSinger ? song.infoSinger.fullName : 'Đang cập nhật'}
-                  .inner-meta.d-flex.justify-content-between.align-items-center
-                    span.small.text-primary
-                      i.fa-solid.fa-headphones.mr-1
-                      | #{song.listen || 0}
-                    span.small.text-danger
-                      i.fa-solid.fa-thumbs-up.mr-1
-                      | #{song.like ? song.like.length : 0}
+            .song-item
+              .inner-image
+                a(href=`/songs/detail/${song.slug}`)
+                  img(src=song.avatar || "/image/spotify_logo.jpg" alt=song.title)
+              .inner-content
+                .inner-title1
+                  a(href=`/songs/detail/${song.slug}`) #{song.title}
+                .inner-singer
+                  i.fa-solid.fa-microphone-lines
+                  if song.infoSinger
+                    a(href=`/singers/${song.infoSinger.slug}` class="text-muted") #{song.infoSinger.fullName}
+                  else
+                    | Đang cập nhật
+                .inner-like
+                  i.fa-solid.fa-thumbs-up
+                  | #{song.like ? song.like.length : 0}
+                .inner-time
+                  i.fa-solid.fa-headphones
+                  | #{song.listen || 0} lượt nghe
+
+    .section-new-songs.mb-5
+      +box-head("Bài hát mới")
+      .row
+        each song in newSongs
+          .col-12.col-md-6.col-lg-4.mb-3
+            .song-item
+              .inner-image
+                a(href=`/songs/detail/${song.slug}`)
+                  img(src=song.avatar || "/image/spotify_logo.jpg" alt=song.title)
+              .inner-content
+                .inner-title1
+                  a(href=`/songs/detail/${song.slug}`) #{song.title}
+                .inner-singer
+                  i.fa-solid.fa-microphone-lines
+                  | #{song.infoSinger ? song.infoSinger.fullName : "Đang cập nhật"}
+                .inner-like
+                  i.fa-solid.fa-thumbs-up
+                  | #{song.like ? song.like.length : 0}
+                .inner-time
+                  i.fa-solid.fa-headphones
+                  | #{song.listen || 0} lượt nghe

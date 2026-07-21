@@ -1,0 +1,29 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-5
+    .row.justify-content-center
+      .col-md-8.col-lg-6
+        +box-head(pageTitle)
+        if messages && messages.error
+          .alert.alert-danger #{messages.error}
+        .card.border-0.shadow-sm
+          .card-body
+            form(action="/users/edit" method="POST")
+              .form-group
+                label(for="fullName") Họ và tên
+                input#fullName.form-control(
+                  type="text"
+                  name="fullName"
+                  value=userInfo.fullName
+                  required
+                )
+              .form-group
+                label(for="email") Email
+                input#email.form-control(type="email" value=userInfo.email disabled)
+              .form-group
+                label(for="password") Mật khẩu mới (để trống nếu không đổi)
+                input#password.form-control(type="password" name="password")
+              button.btn.btn-primary(type="submit") Lưu thay đổi
+              a.btn.btn-link(href="/users/info") Quay lại

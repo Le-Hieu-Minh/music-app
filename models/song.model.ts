@@ -1,7 +1,9 @@
+import { NextFunction } from "express";
 import mongoose from "mongoose";
-import slug from "mongoose-slug-updater";
 
-mongoose.plugin(slug);
+import slugify from 'slugify';
+
+
 
 const songSchema = new mongoose.Schema(
   {
@@ -23,7 +25,6 @@ const songSchema = new mongoose.Schema(
     status: String,
     slug: {
       type: String,
-      slug: "title",
       unique: true
     },
     deleted: {
@@ -36,6 +37,13 @@ const songSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+songSchema.pre("save" as any, function (next: NextFunction) {
+  if (this.isModified("title")) {
+    this.slug = slugify(this.title as any, { lower: true, locale: 'vi', strict: true });
+  }
+  next();
+});
 
 const Song = mongoose.model("Song", songSchema, "songs");
 export default Song;

@@ -1,31 +1,48 @@
 import { Request, Response, NextFunction } from "express";
-import { uploadToCloudinary } from "../../helper/uploadToCloundinary"
+import { uploadToCloudinary } from "../../helper/uploadToCloundinary";
 
-//single file
+// Định nghĩa kiểu cho req.files của Multer khi dùng fields
+interface MulterRequest extends Request {
+  file?: Express.Multer.File;
+  files?: { [fieldname: string]: Express.Multer.File[] } | Express.Multer.File[];
+}
+
+// single file
 export const uploadSingle = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const result = await uploadToCloudinary(req["file"].buffer);
-    req.body[req["file"].fieldname] = result;
-  } catch (error) {
-    console.log(error);
+  // Ép kiểu req thành any hoặc MulterRequest để truy cập .file
+  const multerReq = req as any;
+
+  if (multerReq.file) {
+    try {
+      const result = await uploadToCloudinary(multerReq.file.buffer);
+      req.body[multerReq.file.fieldname] = result;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   next();
 };
-//multi file
+
+// multi file
 export const uploadFields = async (req: Request, res: Response, next: NextFunction) => {
-  console.log(req["files"]);
+  const multerReq = req as any;
+  const files = multerReq.files;
 
-  for (const key in req["files"]) {
-    req.body[key] = [];
+  if (files) {
+    for (const key in files) {
+      req.body[key] = [];
 
-    const array = req["files"][key];
-    for (const item of array) {
-      try {
-        const result = await uploadToCloudinary(item.buffer);
-        req.body[key].push(result);
-      } catch (error) {
-        console.log(error);
+      // Vì files có thể là mảng hoặc object, ta cần ép kiểu để lặp
+      const array = files[key] as Express.Multer.File[];
+
+      for (const item of array) {
+        try {
+          const result = await uploadToCloudinary(item.buffer);
+          req.body[key].push(result);
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   }

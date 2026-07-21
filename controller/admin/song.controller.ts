@@ -3,6 +3,7 @@ import Topic from "../../models/topic.model";
 import Song from "../../models/song.model";
 import Singer from "../../models/singer.model";
 import { systemConfig } from "../../config/config";
+import { getPagination } from "../../helper/pagination";
 
 export interface SongData {
   title: string;
@@ -14,17 +15,33 @@ export interface SongData {
   avatar?: string;
   audio?: string;
 }
+
 //[GET] /admin/songs
 export const index = async (req: Request, res: Response) => {
+  const keyword = ((req.query.keyword as string) || "").trim();
+  const filter: any = { deleted: false };
 
-  const songs = await Song.find({
-    deleted: false
-  });
+  if (keyword) {
+    filter.title = new RegExp(keyword, "i");
+  }
 
+  const total = await Song.countDocuments(filter);
+  const pagination = getPagination(
+    { page: req.query.page as string },
+    total,
+    10
+  );
+
+  const songs = await Song.find(filter)
+    .sort({ createdAt: -1 })
+    .skip(pagination.skip)
+    .limit(pagination.limit);
 
   res.render("admin/pages/songs/index", {
     pageTitle: "Danh sách bài hát",
-    songs: songs
+    songs,
+    keyword,
+    pagination
   });
 };
 
@@ -79,7 +96,7 @@ export const createPost = async (req: Request, res: Response) => {
     req.flash("success", "Thêm mới thành công");
     res.redirect(`/${systemConfig.prefixAdmin}/songs`);
   } catch (error) {
-    req.flash("error", "Thêm mới thành công");
+    req.flash("error", "Thêm mới thất bại");
     res.redirect(`/${systemConfig.prefixAdmin}/songs`);
   }
 
@@ -148,6 +165,7 @@ export const deleteItem = async (req: Request, res: Response) => {
 
     const song = await Song.updateOne({ _id: id }, {
       deleted: true,
+      deletedAt: new Date()
     });
     req.flash("success", "Xóa thành công");
     if (song) {
@@ -155,7 +173,7 @@ export const deleteItem = async (req: Request, res: Response) => {
         code: 200,
         message: "Xóa thành công",
         song: song
-      })
+      });
     }
   } catch (error) {
     req.flash("error", "Xóa thất bại");

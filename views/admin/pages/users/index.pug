@@ -1,0 +1,72 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+
+block main
+  h1(class="mb-4") #{pageTitle}
+  .card.mb-3
+    .card-header Danh sách người dùng
+    .card-body
+      .row.mb-3
+        .col-md-8
+          form(action=`/${prefixAdmin}/users` method="GET" class="form-inline")
+            input.form-control.mr-2(
+              type="text"
+              name="keyword"
+              value=keyword || ""
+              placeholder="Tìm theo tên hoặc email..."
+            )
+            button.btn.btn-primary(type="submit") Tìm
+            if keyword
+              a.btn.btn-link(href=`/${prefixAdmin}/users`) Xóa lọc
+
+      table(class="table table-hover table-sm")
+        thead
+          tr
+            th STT
+            th Họ tên
+            th Email
+            th Trạng thái
+            th Hành động
+        tbody
+          each item, index in users
+            tr
+              td #{(pagination.page - 1) * pagination.limit + index + 1}
+              td #{item.fullName}
+              td #{item.email}
+              td
+                if item.status === "active"
+                  a(
+                    href="javascript:;"
+                    class="badge badge-success"
+                    button-status
+                    data-status=item.status
+                    data-id=item.id
+                    data-path=`/${prefixAdmin}/users/changeStatus`
+                  ) Hoạt động
+                else
+                  a(
+                    href="javascript:;"
+                    class="badge badge-danger"
+                    button-status
+                    data-status=item.status
+                    data-id=item.id
+                    data-path=`/${prefixAdmin}/users/changeStatus`
+                  ) Dừng hoạt động
+              td
+                a(
+                  class="btn btn-secondary btn-sm"
+                  href=`/${prefixAdmin}/users/detail/${item.id}`
+                ) Chi tiết
+                button(
+                  class="btn btn-danger btn-sm ml-1"
+                  button-delete
+                  data-id=item.id
+                  data-path=`/${prefixAdmin}/users/delete`
+                  data-method="PATCH"
+                ) Xóa
+          else
+            tr
+              td(colspan="5" class="text-center text-muted") Chưa có người dùng
+
+      - const base = keyword ? `/${prefixAdmin}/users?keyword=${encodeURIComponent(keyword)}` : `/${prefixAdmin}/users`
+      +pagination(pagination, base)

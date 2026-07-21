@@ -1,0 +1,19 @@
+extends ../../layouts/default.pug
+
+block main
+  h1(class="mb-4") #{pageTitle}
+  .card
+    .card-body
+      p
+        strong Họ tên:
+        |  #{userDetail.fullName}
+      p
+        strong Email:
+        |  #{userDetail.email}
+      p
+        strong Trạng thái:
+        |  #{userDetail.status}
+      p
+        strong Ngày tạo:
+        |  #{userDetail.createdAt}
+      a.btn.btn-secondary(href=`/${prefixAdmin}/users`) Quay lại

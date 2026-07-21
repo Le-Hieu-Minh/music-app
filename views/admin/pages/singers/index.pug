@@ -43,6 +43,7 @@ block main
                           button-status
                           data-status=item.status
                           data-id=item.id
+                          data-path=`/${prefixAdmin}/singers/changeStatus`
                         ) Hoạt động
                       else
                         a(
@@ -51,6 +52,7 @@ block main
                           button-status
                           data-status=item.status
                           data-id=item.id
+                          data-path=`/${prefixAdmin}/singers/changeStatus`
                         ) Dừng hoạt động
                     td
                       if(role.permissions.includes('singer_view'))
@@ -68,6 +70,8 @@ block main
                           class="btn btn-danger btn-sm ml-1"
                           button-delete
                           data-id=item.id
+                          data-path=`/${prefixAdmin}/singers/delete`
+                          data-method="DELETE"
                         ) Xóa
 
   else

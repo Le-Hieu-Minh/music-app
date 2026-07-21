@@ -1,37 +1,18 @@
 extends ../../layouts/auth.pug
 
 block main
-  .container.my-5
+  .container
     .row.justify-content-center
-      .col-8
-        h1(class="text-center") Nhập mã otp
-        form(
-          action="/users/fogot-password/otp"
-          method="POST"
-        )     
-          div(class="form-group")
+      .col-md-7.col-lg-5
+        h1(class="text-center") Nhập mã OTP
+        if messages && messages.error
+          .alert.alert-danger #{messages.error}
+        form(action="/users/fogot-password/otp" method="POST")
+          .form-group
             label(for="email") Email
-            input(
-                type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                value=email
-                required
-            )
-
-          div(class="form-group")
+            input#email.form-control(type="email" name="email" value=email required)
+          .form-group
             label(for="otp") Mã OTP
-            input(
-                type="otp"
-                class="form-control"
-                id="otp"
-                name="otp"
-                required
-            )
-            
-          div(class="form-group")
-            button(
-                type="submit"
-                class="btn btn-primary btn-block"
-            ) Xác nhận
+            input#otp.form-control(type="text" name="otp" required)
+          .form-group.mb-2
+            button.btn.btn-primary.btn-block(type="submit") Xác nhận

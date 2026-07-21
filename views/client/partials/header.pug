@@ -1,38 +1,31 @@
 header.header
   .container
     .row.align-items-center
-      .col-2
+      .col-lg-2.col-md-3.col-12.mb-2.mb-md-0
         .inner-logo
           a(href="/")
-            img(src=settingGeneral.logo, alt=settingGeneral.websiteName)
+            img(
+              src=(settingGeneral && settingGeneral.logo) ? settingGeneral.logo : "/image/spotify_logo.jpg"
+              alt=(settingGeneral && settingGeneral.websiteName) ? settingGeneral.websiteName : "Music App"
+            )
 
-
-      .col-6
+      .col-lg-4.col-md-9.col-12.mb-2.mb-lg-0
         .box-search
           form(action="/search/result" method="GET")
             div(class="form-group d-flex mb-0")
               input(
                 type="text"
-                placeholder="Nhập từ khóa..."
+                placeholder="Tìm bài hát..."
                 class="form-control"
                 name="keyword"
-                value=keyword
+                value=keyword || ""
+                autocomplete="off"
               )
               button(type="submit" class="btn btn-primary") Tìm
-
           .inner-suggest
             .inner-list
-              a(href="/songs/detail/:slugSong" class="inner-item")
-                .inner-image
-                  img(src="https://backend.daca.vn/assets/images/cat-doi-noi-sau.jpg")
-                .inner-info
-                  .inner-title Cắt đôi nỗi sầu
-                  .inner-singer
-                    i(class="fa-solid fa-microphone-lines")
-                    | Tăng Duy Tân
-              
-        
-      .col-4
+
+      .col-lg-6.col-12
         .inner-menu
           ul
             li
@@ -40,8 +33,14 @@ header.header
             li
               a(href="/topics") Chủ đề
             li
+              a(href="/singers") Ca sĩ
+            li
+              a(href="/charts") BXH
+            li
               a(href="/favorite-songs") Yêu thích
-            if(custummer)
+            li
+              a(href="/playlists") Playlist
+            if custummer
               li
                 a(href="/users/info") #{custummer.fullName}
               li

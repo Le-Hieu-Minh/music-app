@@ -1,0 +1,25 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-5
+    .row.justify-content-center
+      .col-md-8.col-lg-6
+        +box-head(pageTitle)
+        if messages && messages.success
+          .alert.alert-success #{messages.success}
+        if messages && messages.error
+          .alert.alert-danger #{messages.error}
+        .card.border-0.shadow-sm
+          .card-body
+            p.mb-2
+              strong Họ tên:
+              |  #{userInfo.fullName}
+            p.mb-2
+              strong Email:
+              |  #{userInfo.email}
+            p.mb-3
+              strong Trạng thái:
+              |  #{userInfo.status === "active" ? "Hoạt động" : "Bị khóa"}
+            a.btn.btn-primary.mr-2(href="/users/edit") Sửa thông tin
+            a.btn.btn-outline-secondary(href="/favorite-songs") Bài hát yêu thích

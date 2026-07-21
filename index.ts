@@ -1,4 +1,3 @@
-
 import express, { Express } from "express";
 import * as database from "./config/database";
 import dotenv from "dotenv";
@@ -6,56 +5,47 @@ import { systemConfig } from "./config/config";
 import path from "path";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
-import cookieParser from "cookie-parser"
+import cookieParser from "cookie-parser";
 import flash from "express-flash";
-import session from 'express-session';
+import session from "express-session";
 
 import clientRoutes from "./router/client/index.router";
 import adminRoutes from "./router/admin/index.router";
-
 
 dotenv.config();
 database.connect();
 const app: Express = express();
 const port: number | string = process.env.PORT || 3000;
 
-//tiniMCE
-app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+// TinyMCE
+app.use("/tinymce", express.static(path.join(__dirname, "node_modules", "tinymce")));
 
-//pug
+// Pug
 app.set("views", "./views");
 app.set("view engine", "pug");
 
-//method-override
-app.use(methodOverride('_method'))
+// Method override
+app.use(methodOverride("_method"));
 
-//body-parser
-app.use(bodyParser.urlencoded())
-app.use(bodyParser.json())
+// Body parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-//cookie-parser
-app.use(cookieParser())
-
-//express-flash
-app.use(cookieParser('QWERTYUIOPASDFGHJ'));
+// Cookie + session + flash
+app.use(cookieParser(process.env.COOKIE_SECRET || "QWERTYUIOPASDFGHJ"));
 app.use(session({
-  secret: 'Le_MINH_HIEU',
+  secret: process.env.SESSION_SECRET || "Le_MINH_HIEU",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: { maxAge: 60000 }
 }));
 app.use(flash());
 
-app.use(express.static(`public`));
+app.use(express.static("public"));
 
-
-//app local variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-//adminRouter
 adminRoutes(app);
-
-//clientRouter
 clientRoutes(app);
 
 app.listen(port, () => {
